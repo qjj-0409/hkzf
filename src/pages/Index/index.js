@@ -87,7 +87,10 @@ export default class Index extends Component {
     // 封装函数-获取最新资讯数据
     async getNews () {
       const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/news?area=AREA%7C88cff55c-aaa4-e2e0')
-      console.log(data)
+      console.log(data.body)
+      this.setState({
+        news: data.body
+      })
     }
 
 
@@ -134,6 +137,47 @@ export default class Index extends Component {
       )
     }
 
+    // 封装函数-渲染租房小组
+    renderGroups () {
+      return (
+        // rendeItem 属性：用来 自定义 每一个单元格中的结构
+        <Grid
+          data={this.state.groups} // 传入的菜单数据
+          columnNum={2} // 列数
+          square={false} // 每个格子是否固定为正方形
+          activeStyle // 点击反馈的自定义样式 (设为 false 时表示禁止点击反馈)
+          hasLine={false} // 是否有边框
+          renderItem={item => ( // 自定义每个 grid 条目的创建函数
+            <Flex className="grid-item" justify="between">
+              <div className="desc">
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+              <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt="" />
+            </Flex>
+          )}
+        />
+      )
+    }
+
+    // 封装函数-渲染最新资讯
+    renderNews () {
+      return this.state.news.map(item => {
+        return (
+          <li className="item" key={item.id}>
+            <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt=""/>
+            <div className="item-right">
+              <h3>{item.title}</h3>
+              <p>
+                <span>{item.from}</span>
+                <span>{item.date}</span>
+              </p>
+            </div>
+          </li>
+        )
+      })
+    }
+
     
     // 生命周期函数-渲染到内存
     render() {
@@ -164,25 +208,9 @@ export default class Index extends Component {
                     <p>更多</p>
                   </div>
                   {/* 内容部分 */}
-                  {/* 
-                    rendeItem 属性：用来 自定义 每一个单元格中的结构
-                  */}
-                  <Grid
-                    data={this.state.groups} // 传入的菜单数据
-                    columnNum={2} // 列数
-                    square={false} // 每个格子是否固定为正方形
-                    activeStyle // 点击反馈的自定义样式 (设为 false 时表示禁止点击反馈)
-                    hasLine={false} // 是否有边框
-                    renderItem={item => ( // 自定义每个 grid 条目的创建函数
-                      <Flex className="grid-item" justify="between">
-                        <div className="desc">
-                          <h3>{item.title}</h3>
-                          <p>{item.desc}</p>
-                        </div>
-                        <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt="" />
-                      </Flex>
-                    )}
-                  />
+                  {/* 调用函数-渲染租房小组 */}
+                  { this.renderGroups() }
+                  
 
                 </div>
                 
@@ -192,37 +220,10 @@ export default class Index extends Component {
                     <h2>最新资讯</h2>
                   </div>
                   <ul>
-                    <li className="item">
-                      <img src="http://api-haoke-dev.itheima.net/img/news/1.png" alt=""/>
-                      <div className="item-right">
-                        <h3>置业选择 | 安贞西里 三室一厅 河间的古雅别院</h3>
-                        <p>
-                          <span>新华网</span>
-                          <span>两天前</span>
-                        </p>
-                      </div>
-                    </li>
-                    <li className="item">
-                      <img src="http://api-haoke-dev.itheima.net/img/news/1.png" alt=""/>
-                      <div className="item-right">
-                        <h3>置业选择 | 安贞西里 三室一厅 河间的古雅别院</h3>
-                        <p>
-                          <span>新华网</span>
-                          <span>两天前</span>
-                        </p>
-                      </div>
-                    </li>
-                    <li className="item">
-                      <img src="http://api-haoke-dev.itheima.net/img/news/1.png" alt=""/>
-                      <div className="item-right">
-                        <h3>置业选择 | 安贞西里 三室一厅 河间的古雅别院</h3>
-                        <p>
-                          <span>新华网</span>
-                          <span>两天前</span>
-                        </p>
-                      </div>
-                    </li>
-
+                    {/* 调用函数-渲染最新资讯 */}
+                    { this.renderNews() }
+                    
+                    
                   </ul>
                 </div>
 
