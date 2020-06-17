@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 // 导入antd-moblie组件库
-import { Carousel, Flex } from 'antd-mobile'
+import { Carousel, Flex, Grid } from 'antd-mobile'
 // 导入样式文件
 import './index.css'
 // 导入sass样式文件
@@ -154,48 +154,26 @@ export default class Index extends Component {
                     <p>更多</p>
                   </div>
                   {/* 内容部分 */}
-                  <div className="groups-content">
-                    {
-                      this.state.groups.map((item,index) => {
-                        return <div className="item" key={item.id}>
-                        <div className="item-left">
-                          <p>{item.title}</p>
-                          <span>{item.desc}</span>
+                  {/* 
+                    rendeItem 属性：用来 自定义 每一个单元格中的结构
+                  */}
+                  <Grid
+                    data={this.state.groups} // 传入的菜单数据
+                    columnNum={2} // 列数
+                    square={false} // 每个格子是否固定为正方形
+                    activeStyle // 点击反馈的自定义样式 (设为 false 时表示禁止点击反馈)
+                    hasLine={false} // 是否有边框
+                    renderItem={item => ( // 自定义每个 grid 条目的创建函数
+                      <Flex className="grid-item" justify="between">
+                        <div className="desc">
+                          <h3>家住回龙观</h3>
+                          <p>归属的感觉</p>
                         </div>
-                        <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt=""/>
-                      </div>
-                      })
-                    }
-                    {/* <div className="item">
-                      <div className="item-left">
-                        <p>家住回龙观</p>
-                        <span>归属的感觉</span>
-                      </div>
-                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
-                    </div>
-                    <div className="item">
-                      <div className="item-left">
-                        <p>家住回龙观</p>
-                        <span>归属的感觉</span>
-                      </div>
-                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
-                    </div>
-                    <div className="item">
-                      <div className="item-left">
-                        <p>家住回龙观</p>
-                        <span>归属的感觉</span>
-                      </div>
-                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
-                    </div>
-                    <div className="item">
-                      <div className="item-left">
-                        <p>家住回龙观</p>
-                        <span>归属的感觉</span>
-                      </div>
-                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
-                    </div> */}
+                        <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt="" />
+                      </Flex>
+                    )}
+                  />
 
-                  </div>
                 </div>
                 
             </div>

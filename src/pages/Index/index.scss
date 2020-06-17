@@ -12,32 +12,76 @@
             font-size: 12px;
         }
     }
-    .groups-content {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        .item {
-            width: 49%;
-            height: 85px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+
+    .am-grid {
+        .am-flexbox {
+          margin-bottom: 10px;
+          background-color: transparent;
+    
+          .am-flexbox-item {
+            .am-grid-item-content {
+              height: 85px;
+              padding: 12px 0;
+            }
+          }
+    
+          .am-grid-item {
+            margin-right: 0;
             background-color: #fff;
-            margin-bottom: 7px;
-            .item-left {
-                p {
-                    font-weight: 700;
-                    font-size: 14px;
-                }
-                span {
-                    font-size: 12px;
-                }
+    
+            &:first-child {
+              margin-right: 10px;
             }
-            img {
-                width: 55px;
-                height: 55px;
-                margin-left: 15px;
-            }
+          }
         }
-    }
+      }
+
+    .grid-item {
+        padding: 0 13px;
+    
+        .desc {
+          h3 {
+            margin-bottom: 5px;
+            font-size: 13px;
+          }
+    
+          p {
+            color: #999;
+            font-size: 12px;
+          }
+        }
+    
+        img {
+          width: 55px;
+          height: 55px;
+        }
+      }
+    // .groups-content {
+    //     display: flex;
+    //     justify-content: space-between;
+    //     flex-wrap: wrap;
+    //     .item {
+    //         width: 49%;
+    //         height: 85px;
+    //         display: flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //         background-color: #fff;
+    //         margin-bottom: 7px;
+    //         .item-left {
+    //             p {
+    //                 font-weight: 700;
+    //                 font-size: 14px;
+    //             }
+    //             span {
+    //                 font-size: 12px;
+    //             }
+    //         }
+    //         img {
+    //             width: 55px;
+    //             height: 55px;
+    //             margin-left: 15px;
+    //         }
+    //     }
+    // }
 }
