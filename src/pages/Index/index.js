@@ -183,39 +183,63 @@ export default class Index extends Component {
     render() {
         return (
             <div className="index">
-                {/* 轮播图 */}
-                <Carousel
-                    autoplay={this.state.isAutoPlay} // 是否自动切换
-                    infinite // 是否循环播放
-                    // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)} // 切换面板前的回调函数
-                    // afterChange={index => console.log('slide to', index)} // 切换面板后的回调函数
-                    >
-                    {/* 调用函数-渲染轮播图 */}
-                    { this.renderSwiper() }
-                </Carousel>
 
-                {/* 菜单栏 */}
-                <Flex className="nav">
-                  {/* 调用函数-渲染导航菜单 */}
-                  { this.renderNav() }
-                </Flex>
-
-                {/* 租房小组 */}
-                <div className="groups">
-                  {/* 标题部分 */}
-                  <div className="groups-title">
-                    <h2>租房小组</h2>
-                    <p>更多</p>
+              {/* 顶部搜索栏 */}
+              <div className="search">
+                <div className="search-left">
+                  <div className="location">
+                    <span
+                      onClick={() => {
+                        this.props.history.push('/citylist')
+                      }}
+                    >北京</span>
+                    <i className="iconfont icon-arrow"></i>
                   </div>
-                  {/* 内容部分 */}
-                  {/* 调用函数-渲染租房小组 */}
-                  { this.renderGroups() }
-                  
-
+                  <div className="searchForm">
+                    <i className="iconfont icon-seach"></i>
+                    <span>请输入小区或地址</span>
+                  </div>
                 </div>
+                <i
+                  className="iconfont icon-map"
+                  onClick={() => {
+                    this.props.history.push('/map')
+                  }}
+                ></i>
+              </div>
+
+              {/* 轮播图 */}
+              <Carousel
+                  autoplay={this.state.isAutoPlay} // 是否自动切换
+                  infinite // 是否循环播放
+                  // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)} // 切换面板前的回调函数
+                  // afterChange={index => console.log('slide to', index)} // 切换面板后的回调函数
+                  >
+                  {/* 调用函数-渲染轮播图 */}
+                  { this.renderSwiper() }
+              </Carousel>
+
+              {/* 菜单栏 */}
+              <Flex className="nav">
+                {/* 调用函数-渲染导航菜单 */}
+                { this.renderNav() }
+              </Flex>
+
+              {/* 租房小组 */}
+              <div className="groups">
+                {/* 标题部分 */}
+                <div className="groups-title">
+                  <h2>租房小组</h2>
+                  <p>更多</p>
+                </div>
+                {/* 内容部分 */}
+                {/* 调用函数-渲染租房小组 */}
+                { this.renderGroups() }
                 
-                {/* 最新资讯 */}
-                <div className="news">
+              </div>
+              
+              {/* 最新资讯 */}
+              <div className="news">
                   <div className="news-title">
                     <h2>最新资讯</h2>
                   </div>

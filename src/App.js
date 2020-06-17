@@ -13,6 +13,7 @@ import { BrowserRouter, Route, Redirect} from 'react-router-dom'
 // 导入组件
 import Home from './pages/Home'
 import CityList from './pages/CityList/'
+import Map from './pages/Map/'
 
 export default class App extends Component {
     render() {
@@ -32,6 +33,7 @@ export default class App extends Component {
 
                 {/* 城市列表组件 */}
                 <Route exact path="/citylist" component={CityList}></Route>
+                <Route exact path="/map" component={Map}></Route>
             </div>
             </BrowserRouter>
         )
