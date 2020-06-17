@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import { Carousel, Flex } from 'antd-mobile'
 // 导入样式文件
 import './index.css'
+// 导入sass样式文件
+import './index.scss'
 // 导入导航菜单图片
 import nav1 from '../../assets/images/nav-1.png'
 import nav2 from '../../assets/images/nav-2.png'
@@ -40,12 +42,16 @@ export default class Index extends Component {
     state = {
       data: [], // 轮播图数据
       imgHeight: 176, // 轮播图片大小
-      isAutoPlay: false // 控制是否自动轮播
+      isAutoPlay: false, // 控制是否自动轮播
+      groups: [] // 租房小组数据
     }
 
-    // 初次渲染生命周期函数
+    // 生命周期函数-初次渲染到页面
     componentDidMount() {
+      // 获取轮播图数据
       this.getSwiperData()
+      // 获取租房小组数据
+      this.getGroups()
     }
 
     // 封装函数-获取轮播图数据
@@ -64,6 +70,16 @@ export default class Index extends Component {
         })
       }
     }
+
+    // 封装函数-获取租房小组数据
+    async getGroups () {
+      const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/groups?area=AREA%7C88cff55c-aaa4-e2e0')
+      console.log(data.body)
+      this.setState({
+        groups: data.body
+      })
+    }
+
 
     // 封装函数-渲染轮播图
     renderSwiper () {
@@ -108,7 +124,8 @@ export default class Index extends Component {
       )
     }
 
-    // 渲染到内存
+    
+    // 生命周期函数-渲染到内存
     render() {
         return (
             <div className="index">
@@ -128,6 +145,58 @@ export default class Index extends Component {
                   {/* 调用函数-渲染导航菜单 */}
                   { this.renderNav() }
                 </Flex>
+
+                {/* 租房小组 */}
+                <div className="groups">
+                  {/* 标题部分 */}
+                  <div className="groups-title">
+                    <h2>租房小组</h2>
+                    <p>更多</p>
+                  </div>
+                  {/* 内容部分 */}
+                  <div className="groups-content">
+                    {
+                      this.state.groups.map((item,index) => {
+                        return <div className="item" key={item.id}>
+                        <div className="item-left">
+                          <p>{item.title}</p>
+                          <span>{item.desc}</span>
+                        </div>
+                        <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt=""/>
+                      </div>
+                      })
+                    }
+                    {/* <div className="item">
+                      <div className="item-left">
+                        <p>家住回龙观</p>
+                        <span>归属的感觉</span>
+                      </div>
+                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
+                    </div>
+                    <div className="item">
+                      <div className="item-left">
+                        <p>家住回龙观</p>
+                        <span>归属的感觉</span>
+                      </div>
+                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
+                    </div>
+                    <div className="item">
+                      <div className="item-left">
+                        <p>家住回龙观</p>
+                        <span>归属的感觉</span>
+                      </div>
+                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
+                    </div>
+                    <div className="item">
+                      <div className="item-left">
+                        <p>家住回龙观</p>
+                        <span>归属的感觉</span>
+                      </div>
+                      <img src="http://api-haoke-dev.itheima.net/img/groups/1.png" alt=""/>
+                    </div> */}
+
+                  </div>
+                </div>
                 
             </div>
         )
