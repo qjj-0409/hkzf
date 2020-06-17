@@ -6,6 +6,7 @@ import { Carousel, Flex, Grid } from 'antd-mobile'
 import './index.css'
 // 导入sass样式文件
 import './index.scss'
+import './news.scss'
 // 导入导航菜单图片
 import nav1 from '../../assets/images/nav-1.png'
 import nav2 from '../../assets/images/nav-2.png'
@@ -43,7 +44,8 @@ export default class Index extends Component {
       data: [], // 轮播图数据
       imgHeight: 176, // 轮播图片大小
       isAutoPlay: false, // 控制是否自动轮播
-      groups: [] // 租房小组数据
+      groups: [], // 租房小组数据
+      news: [] // 最新资讯数据
     }
 
     // 生命周期函数-初次渲染到页面
@@ -52,6 +54,8 @@ export default class Index extends Component {
       this.getSwiperData()
       // 获取租房小组数据
       this.getGroups()
+      // 获取最新资讯数据
+      this.getNews()
     }
 
     // 封装函数-获取轮播图数据
@@ -78,6 +82,12 @@ export default class Index extends Component {
       this.setState({
         groups: data.body
       })
+    }
+
+    // 封装函数-获取最新资讯数据
+    async getNews () {
+      const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/news?area=AREA%7C88cff55c-aaa4-e2e0')
+      console.log(data)
     }
 
 
@@ -166,8 +176,8 @@ export default class Index extends Component {
                     renderItem={item => ( // 自定义每个 grid 条目的创建函数
                       <Flex className="grid-item" justify="between">
                         <div className="desc">
-                          <h3>家住回龙观</h3>
-                          <p>归属的感觉</p>
+                          <h3>{item.title}</h3>
+                          <p>{item.desc}</p>
                         </div>
                         <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt="" />
                       </Flex>
@@ -176,6 +186,46 @@ export default class Index extends Component {
 
                 </div>
                 
+                {/* 最新资讯 */}
+                <div className="news">
+                  <div className="news-title">
+                    <h2>最新资讯</h2>
+                  </div>
+                  <ul>
+                    <li className="item">
+                      <img src="http://api-haoke-dev.itheima.net/img/news/1.png" alt=""/>
+                      <div className="item-right">
+                        <h3>置业选择 | 安贞西里 三室一厅 河间的古雅别院</h3>
+                        <p>
+                          <span>新华网</span>
+                          <span>两天前</span>
+                        </p>
+                      </div>
+                    </li>
+                    <li className="item">
+                      <img src="http://api-haoke-dev.itheima.net/img/news/1.png" alt=""/>
+                      <div className="item-right">
+                        <h3>置业选择 | 安贞西里 三室一厅 河间的古雅别院</h3>
+                        <p>
+                          <span>新华网</span>
+                          <span>两天前</span>
+                        </p>
+                      </div>
+                    </li>
+                    <li className="item">
+                      <img src="http://api-haoke-dev.itheima.net/img/news/1.png" alt=""/>
+                      <div className="item-right">
+                        <h3>置业选择 | 安贞西里 三室一厅 河间的古雅别院</h3>
+                        <p>
+                          <span>新华网</span>
+                          <span>两天前</span>
+                        </p>
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+
             </div>
         )
     }

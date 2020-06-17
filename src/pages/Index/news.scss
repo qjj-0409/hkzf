@@ -1,0 +1,39 @@
+// 最新资讯
+.news {
+    padding: 10px;
+    background-color: #fff;
+    .news-title {
+        h2 {
+            font-size: 14px;
+        }
+    }
+    ul {
+        li {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+            img {
+                // width: 120px;
+                height: 90px;
+                margin-right: 10px;
+            }
+            .item-right {
+                position: relative;
+                h3 {
+                    font-size: 14px;
+                    padding-right: 25px;
+                }
+                p {
+                    display: flex;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    justify-content: space-between;
+                    font-size: 12px;
+                    color: #9c9fa1;
+                }
+            }
+        }
+    }
+}
