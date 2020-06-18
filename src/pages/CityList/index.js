@@ -89,13 +89,26 @@ export default class CityList extends Component {
       isVisible, // 当前行是否可见，看得见true，看不见false
       style, // 将应用于行(定位该行)的样式对象，必须写
     }) => {
+      let word = this.state.cityWord[index]
       return (
         // 外层大盒子的key和style必填
         <div className="city" key={key} style={style}>
-          <div className="title">A</div>
+          <div className="title">{this.formatWord(word)}</div>
           <div className="name">北京</div>
         </div>
       )
+    }
+
+    // 封装函数-格式化单词
+    formatWord (word) {
+      switch (word) {
+        case '#':
+          return '当前定位'
+        case 'hot':
+          return '热门城市'
+        default:
+          return word.toUpperCase()
+      }
     }
 
     // 生命周期-初次渲染到页面
