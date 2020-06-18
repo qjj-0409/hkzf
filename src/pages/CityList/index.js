@@ -5,6 +5,9 @@ import { NavBar, Icon } from 'antd-mobile'
 import './citylist.scss'
 import axios from 'axios'
 
+// 导入公共函数
+import { getCurrentCity } from '../../utils/index'
+
 export default class CityList extends Component {
     // 封装函数-获取城市列表
     async getCityList () {
@@ -12,12 +15,24 @@ export default class CityList extends Component {
       // console.log(data.body)
       // 遍历城市列表，格式化数据
       const { cityList, cityWord} = this.formatCityList(data.body)
+
       // 发请求获取热门城市
-      const res = await axios.get('http://api-haoke-dev.itheima.net/area/hot')
-      console.log('热门城市：',res.data.body)
+      const hot = await axios.get('http://api-haoke-dev.itheima.net/area/hot')
+      console.log('热门城市：',hot.data.body)
       // 追加热门城市到城市列表
-      cityList['hot'] = res.data.body
+      cityList['hot'] = hot.data.body
+      // 在右侧单词列表插入热门城市关键词
       cityWord.unshift('hot')
+
+      // 获取当前定位城市信息
+      let currentCity = await getCurrentCity()
+      // 百度地图根据ip获取定位城市的操作是异步的，所以尚未获取到定位城市就返回打印了下面的代码，因此是undefined
+      // console.log('获取到的定位城市：',currentCity) // undefined
+      // 将定位城市追加到城市列表
+      cityList['#'] = [currentCity]
+      // 在右侧单词列表插入定位城市关键词
+      cityWord.unshift('#')
+
       console.log('城市列表：', cityList)
       console.log('城市单词列表：', cityWord)
     }
