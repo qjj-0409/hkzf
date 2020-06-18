@@ -15,27 +15,11 @@ import {List} from 'react-virtualized'
 // 导入公共函数
 import { getCurrentCity } from '../../utils/index'
 
-// 3.声明list列表数据
-const list = [
-  'Brian Vaughn',
-  // And so on...
-];
-
-// 5.封装rowRenderer函数，渲染每条数据的div样式
-function rowRenderer({
-  key, // 数组中行的唯一键
-  index, // 每一行的索引
-  isScrolling, // 当前数据是否正在滚动，true表示正在滚动，false表示没有滚动
-  isVisible, // 当前行是否可见，看得见true，看不见false
-  style, // 将应用于行(定位该行)的样式对象，必须写
-}) {
-  return (
-    // 外层大盒子的key和style必填
-    <div key={key} style={style}>
-      {list[index]}
-    </div>
-  )
-}
+// 3.声明list列表数据，我们使用cityWord列表
+// const list = [
+//   'Brian Vaughn',
+//   // And so on...
+// ];
 
 export default class CityList extends Component {
     state = {
@@ -97,6 +81,23 @@ export default class CityList extends Component {
       }
     }
 
+    // 5.封装rowRenderer函数，渲染每条数据的div样式
+    rowRenderer = ({
+      key, // 数组中行的唯一键
+      index, // 每一行的索引
+      isScrolling, // 当前数据是否正在滚动，true表示正在滚动，false表示没有滚动
+      isVisible, // 当前行是否可见，看得见true，看不见false
+      style, // 将应用于行(定位该行)的样式对象，必须写
+    }) => {
+      return (
+        // 外层大盒子的key和style必填
+        <div className="city" key={key} style={style}>
+          <div className="title">A</div>
+          <div className="name">北京</div>
+        </div>
+      )
+    }
+
     // 生命周期-初次渲染到页面
     componentDidMount () {
       // 获取城市列表
@@ -113,15 +114,14 @@ export default class CityList extends Component {
             icon={<Icon type="left" />} // 出现在最左边的图标占位符
             onLeftClick={() => console.log('onLeftClick')} // 导航左边点击回调
           >城市选择</NavBar>
-          我是CityList组件
 
           {/* 4.使用List组件渲染列表数据 */}
           <List
             width={300} // 列表宽
             height={300} // 列表高
-            rowCount={list.length} // 总条数/行数
-            rowHeight={20} // 每行高度
-            rowRenderer={rowRenderer} // 每行渲染的html内容
+            rowCount={this.state.cityWord.length} // 总条数/行数
+            rowHeight={120} // 每行高度
+            rowRenderer={this.rowRenderer} // 每行渲染的html内容
           />
         </div>
       )

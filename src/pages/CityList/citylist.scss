@@ -2,8 +2,23 @@
     padding-top: 45px;
 }
 .navbar {
-    background-color: #eee;
+    background-color: #eee !important;
     position: fixed;
     top: 0;
     width: 100%;
+}
+.city {
+    background-color: #fff;
+    .title {
+        font-size: 14px;
+        padding: 10px 15px;
+        color: #999;
+    }
+    .name {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 15px;
+        font-size: 16px;
+        border-bottom: 1px solid #eee
+    }
 }
