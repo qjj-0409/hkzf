@@ -45,7 +45,8 @@ export default class Index extends Component {
       imgHeight: 176, // 轮播图片大小
       isAutoPlay: false, // 控制是否自动轮播
       groups: [], // 租房小组数据
-      news: [] // 最新资讯数据
+      news: [], // 最新资讯数据
+      currentCity: '' // 当前城市
     }
 
     // 生命周期函数-初次渲染到页面
@@ -56,6 +57,8 @@ export default class Index extends Component {
       this.getGroups()
       // 获取最新资讯数据
       this.getNews()
+      // 获取当前定位城市
+      this.getCurrentCity()
     }
 
     // 封装函数-获取轮播图数据
@@ -78,16 +81,28 @@ export default class Index extends Component {
     // 封装函数-获取租房小组数据
     async getGroups () {
       const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/groups?area=AREA%7C88cff55c-aaa4-e2e0')
-      console.log(data.body)
+      // console.log(data.body)
       this.setState({
         groups: data.body
+      })
+    }
+
+    // 封装函数-获取当前城市
+    getCurrentCity () {
+      var myCity = new window.BMap.LocalCity();
+      myCity.get((result) => {
+        var cityName = result.name
+        this.setState({
+          currentCity: cityName
+        })
+        // console.log("当前定位城市:"+cityName)
       })
     }
 
     // 封装函数-获取最新资讯数据
     async getNews () {
       const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/news?area=AREA%7C88cff55c-aaa4-e2e0')
-      console.log(data.body)
+      // console.log(data.body)
       this.setState({
         news: data.body
       })
@@ -192,7 +207,7 @@ export default class Index extends Component {
                       onClick={() => {
                         this.props.history.push('/citylist')
                       }}
-                    >北京</span>
+                    >{this.state.currentCity}</span>
                     <i className="iconfont icon-arrow"></i>
                   </div>
                   <div className="searchForm">
