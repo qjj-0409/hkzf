@@ -23,6 +23,12 @@ import { getCurrentCity } from '../../utils/index'
 // ];
 
 export default class CityList extends Component {
+  // react中ref的使用
+  // 1.调用React.createRef()方法创建ref对象
+  listRef = React.createRef()
+  // 2.将创建好的ref对象绑定给需要的标签或组件
+  // 3.通过ref对象获取dom对象或组件 ref对象.current
+
   state = {
     cityList: {}, // 城市列表
     cityWord: [], // 城市单词列表
@@ -37,7 +43,7 @@ export default class CityList extends Component {
 
     // 发请求获取热门城市
     const hot = await axios.get('http://api-haoke-dev.itheima.net/area/hot')
-    console.log('热门城市：',hot.data.body)
+    // console.log('热门城市：',hot.data.body)
     // 追加热门城市到城市列表
     cityList['hot'] = hot.data.body
     // 在右侧单词列表插入热门城市关键词
@@ -52,8 +58,8 @@ export default class CityList extends Component {
     // 在右侧单词列表插入定位城市关键词
     cityWord.unshift('#')
 
-    console.log('城市列表：', cityList)
-    console.log('城市单词列表：', cityWord)
+    // console.log('城市列表：', cityList)
+    // console.log('城市单词列表：', cityWord)
     this.setState({
       cityList: cityList,
       cityWord: cityWord
@@ -138,6 +144,10 @@ export default class CityList extends Component {
       return <li
         key={index}
         className={index === this.state.activeIndex ? 'active' : ''}
+        onClick={() => {
+          // 让list组件滚动到指定索引的城市位置
+          this.listRef.current.scrollToRow(index)
+        }}
       >{item === 'hot' ? '热' : item.toUpperCase()}</li>
     })
   }
@@ -153,7 +163,7 @@ export default class CityList extends Component {
       this.setState({
         activeIndex: startIndex
       })
-      console.log('开始行索引：',startIndex)
+      // console.log('开始行索引：',startIndex)
       // 小问题：若一直在一个索引处来回滚动，修改多次激活索引是没必要的
     }
     
@@ -191,6 +201,8 @@ export default class CityList extends Component {
               rowHeight={this.getRowHeight} // 每行高度
               rowRenderer={this.rowRenderer} // 每行渲染的html内容
               onRowsRendered={this.onRowsRendered} // 当List数据滚动渲染的时候执行函数
+              ref={this.listRef}
+              scrollToAlignment="start" // 控制滚动行的位置，默认是auto；start：总是将行对齐列表可视区的顶部
             />
           )}
         </AutoSizer>

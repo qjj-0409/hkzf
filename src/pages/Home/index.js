@@ -93,7 +93,7 @@ class Home extends React.Component {
 
                 <TabBar
                   unselectedTintColor="#949494" // 未选中的字体颜色
-                  tintColor="skyblue" // 选中的字体颜色
+                  tintColor="#21b97a" // 选中的字体颜色
                   barTintColor="white" // tabbar 背景色
                   hidden={this.state.hidden} // 控制TabBar是否隐藏
                   noRenderContent={true}
