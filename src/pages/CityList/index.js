@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import { NavBar, Icon, Toast } from 'antd-mobile'
 
 import './citylist.scss'
@@ -15,6 +14,8 @@ import {AutoSizer, List} from 'react-virtualized'
 
 // 导入公共函数
 import { getCurrentCity } from '../../utils/index'
+// 导入顶部导航栏组件
+import NavHeader from '../../components/NavHeader/index'
 
 // 3.声明list列表数据，我们使用cityWord列表
 // const list = [
@@ -200,15 +201,7 @@ export default class CityList extends Component {
     return (
       <div className="citylist">
         {/* 顶部导航栏 */}
-        <NavBar
-          className="navbar"
-          mode="light" // 模式 light dark
-          icon={<Icon type="left" />} // 出现在最左边的图标占位符
-          onLeftClick={() => {
-            // 返回上一页
-            this.props.history.go(-1)
-          }} // 导航左边点击回调
-        >城市选择</NavBar>
+        <NavHeader>城市列表</NavHeader>
 
         {/* 左侧城市列表 */}
         <AutoSizer>
