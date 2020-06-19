@@ -141,6 +141,7 @@ export default class CityList extends Component {
   render() {
     return (
       <div className="citylist">
+        {/* 顶部导航栏 */}
         <NavBar
           className="navbar"
           mode="light" // 模式 light dark
@@ -151,6 +152,7 @@ export default class CityList extends Component {
           }} // 导航左边点击回调
         >城市选择</NavBar>
 
+        {/* 左侧城市列表 */}
         <AutoSizer>
           {({height, width}) => (
             // 4.使用List组件渲染列表数据
@@ -164,6 +166,14 @@ export default class CityList extends Component {
           )}
         </AutoSizer>
         
+        {/* 右侧单词列表 */}
+        <ul className="city-index">
+          <li className="active">#</li>
+          <li>A</li>
+          <li>B</li>
+          <li>C</li>
+        </ul>
+
       </div>
     )
   }
