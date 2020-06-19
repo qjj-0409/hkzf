@@ -10,7 +10,8 @@ import axios from 'axios'
 // react-virtualized的基本使用
 // 1.下载安装react-virtualized插件
 // 2.导入react-virtualized中的List组件
-import {List} from 'react-virtualized'
+// AutoSizer的作用：计算屏幕剩余宽高，并设置给被包裹的List组件
+import {AutoSizer, List} from 'react-virtualized'
 
 // 导入公共函数
 import { getCurrentCity } from '../../utils/index'
@@ -133,14 +134,19 @@ export default class CityList extends Component {
             }} // 导航左边点击回调
           >城市选择</NavBar>
 
-          {/* 4.使用List组件渲染列表数据 */}
-          <List
-            width={300} // 列表宽
-            height={300} // 列表高
-            rowCount={this.state.cityWord.length} // 总条数/行数
-            rowHeight={120} // 每行高度
-            rowRenderer={this.rowRenderer} // 每行渲染的html内容
-          />
+          <AutoSizer>
+            {({height, width}) => (
+              // 4.使用List组件渲染列表数据
+              <List
+                width={width} // 列表宽
+                height={height} // 列表高
+                rowCount={this.state.cityWord.length} // 总条数/行数
+                rowHeight={120} // 每行高度
+                rowRenderer={this.rowRenderer} // 每行渲染的html内容
+              />
+            )}
+          </AutoSizer>
+          
         </div>
       )
     }
