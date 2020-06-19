@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { NavBar, Icon } from 'antd-mobile'
+import { NavBar, Icon, Toast } from 'antd-mobile'
 
 import './citylist.scss'
 
@@ -110,6 +110,9 @@ export default class CityList extends Component {
               <div
                 className="name"
                 key={item.value}
+                onClick={() => {
+                  this.changeCurrentCity(item)
+                }}
               >{item.label}</div>
             )
           })
@@ -167,6 +170,23 @@ export default class CityList extends Component {
       // 小问题：若一直在一个索引处来回滚动，修改多次激活索引是没必要的
     }
     
+  }
+
+  // 封装函数-点击切换当前城市租房信息
+  changeCurrentCity = (city) => {
+    // 只有北上广深有房源信息
+    let citys = ['北京', '上海', '广州', '深圳']
+    // 判断当前点击的城市再数组中是否存在
+    if (citys.indexOf(city.label) !== -1) {
+      // 如果是北上广深，则切换城市
+      // 修改本地存储中的数据
+      localStorage.setItem('my-city', JSON.stringify(city))
+      // 跳转到首页
+      this.props.history.push('/home/index')
+    } else {
+      // 否则，提示暂无房源
+      Toast.info('暂无房源', 1);
+    }
   }
 
   // 生命周期-初次渲染到页面
