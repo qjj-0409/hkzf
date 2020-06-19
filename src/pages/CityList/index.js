@@ -142,6 +142,23 @@ export default class CityList extends Component {
     })
   }
 
+  // 封装函数-用来在渲染列表时触发
+  // ({ overscanStartIndex: number, overscanStopIndex: number, startIndex: number, stopIndex: number }): void
+  // startIndex：当前可视区开始行的索引
+  // stopIndex：当前可视区末尾行的索引
+  onRowsRendered = ({overscanStartIndex, overscanStopIndex, startIndex, stopIndex}) => {
+    // 优化：索引不一样再修改
+    if (startIndex !== this.state.activeIndex) {
+      // 当滚动到某个单词城市时，让当前单词城市对应的右侧单词高亮
+      this.setState({
+        activeIndex: startIndex
+      })
+      console.log('开始行索引：',startIndex)
+      // 小问题：若一直在一个索引处来回滚动，修改多次激活索引是没必要的
+    }
+    
+  }
+
   // 生命周期-初次渲染到页面
   componentDidMount () {
     // 获取城市列表
@@ -173,6 +190,7 @@ export default class CityList extends Component {
               rowCount={this.state.cityWord.length} // 总条数/行数
               rowHeight={this.getRowHeight} // 每行高度
               rowRenderer={this.rowRenderer} // 每行渲染的html内容
+              onRowsRendered={this.onRowsRendered} // 当List数据滚动渲染的时候执行函数
             />
           )}
         </AutoSizer>
