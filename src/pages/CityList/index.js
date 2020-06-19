@@ -25,7 +25,8 @@ import { getCurrentCity } from '../../utils/index'
 export default class CityList extends Component {
   state = {
     cityList: {}, // 城市列表
-    cityWord: [] // 城市单词列表
+    cityWord: [], // 城市单词列表
+    activeIndex: 0 // 激活的索引
   }
   // 封装函数-获取城市列表
   async getCityList () {
@@ -131,6 +132,16 @@ export default class CityList extends Component {
     }
   }
 
+  // 封装函数-循环渲染右侧单词列表
+  renderWordList = () => {
+    return this.state.cityWord.map((item,index) => {
+      return <li
+        key={index}
+        className={index === this.state.activeIndex ? 'active' : ''}
+      >{item === 'hot' ? '热' : item.toUpperCase()}</li>
+    })
+  }
+
   // 生命周期-初次渲染到页面
   componentDidMount () {
     // 获取城市列表
@@ -168,10 +179,8 @@ export default class CityList extends Component {
         
         {/* 右侧单词列表 */}
         <ul className="city-index">
-          <li className="active">#</li>
-          <li>A</li>
-          <li>B</li>
-          <li>C</li>
+          {/* 调用函数-渲染单词列表 */}
+          { this.renderWordList() }
         </ul>
 
       </div>
