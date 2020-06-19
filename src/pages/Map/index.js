@@ -3,6 +3,9 @@ import React, { Component } from 'react'
 // 引入样式文件
 import './map.scss'
 
+// 导入封装的组件
+import NavHeader from '../../components/NavHeader/index'
+
 const BMap = window.BMap
 export default class Map extends Component {
     // 生命周期函数-初次渲染到页面
@@ -24,8 +27,11 @@ export default class Map extends Component {
     render() {
         return (
             <div className="map">
-                {/* 1.创建地图容器元素 */}
-                <div id="container"></div>
+              {/* 顶部导航栏 */}
+              <NavHeader></NavHeader>
+
+              {/* 1.创建地图容器元素 */}
+              <div id="container"></div>
             </div>
         )
     }
