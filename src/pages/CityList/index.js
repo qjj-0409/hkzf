@@ -90,6 +90,8 @@ export default class CityList extends Component {
       style, // 将应用于行(定位该行)的样式对象，必须写
     }) => {
       let word = this.state.cityWord[index]
+    //   let citys = this.state.cityList[word]
+    //   console.log(word,citys)
       return (
         // 外层大盒子的key和style必填
         <div className="city" key={key} style={style}>
@@ -125,7 +127,10 @@ export default class CityList extends Component {
             className="navbar"
             mode="light" // 模式 light dark
             icon={<Icon type="left" />} // 出现在最左边的图标占位符
-            onLeftClick={() => console.log('onLeftClick')} // 导航左边点击回调
+            onLeftClick={() => {
+              // 返回上一页
+              this.props.history.go(-1)
+            }} // 导航左边点击回调
           >城市选择</NavBar>
 
           {/* 4.使用List组件渲染列表数据 */}

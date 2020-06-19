@@ -16,6 +16,9 @@ import nav4 from '../../assets/images/nav-4.png'
 // 导入axios
 import axios from 'axios'
 
+// 导入公共函数
+import { getCurrentCity } from '../../utils/index'
+
 // 导航菜单的数据
 const navs = [{
     id: 0,
@@ -50,15 +53,18 @@ export default class Index extends Component {
     }
 
     // 生命周期函数-初次渲染到页面
-    componentDidMount() {
+    async componentDidMount() {
       // 获取轮播图数据
       this.getSwiperData()
       // 获取租房小组数据
       this.getGroups()
       // 获取最新资讯数据
       this.getNews()
-      // 获取当前定位城市
-      this.getCurrentCity()
+      // 调用公共函数-获取当前定位城市
+      let dingwei = await getCurrentCity()
+      this.setState({
+        currentCity: dingwei.label
+      })
     }
 
     // 封装函数-获取轮播图数据
@@ -87,17 +93,17 @@ export default class Index extends Component {
       })
     }
 
-    // 封装函数-获取当前城市
-    getCurrentCity () {
-      var myCity = new window.BMap.LocalCity();
-      myCity.get((result) => {
-        var cityName = result.name
-        this.setState({
-          currentCity: cityName
-        })
-        // console.log("当前定位城市:"+cityName)
-      })
-    }
+    // // 封装函数-获取当前城市
+    // getCurrentCity () {
+    //   var myCity = new window.BMap.LocalCity();
+    //   myCity.get((result) => {
+    //     var cityName = result.name
+    //     this.setState({
+    //       currentCity: cityName
+    //     })
+    //     // console.log("当前定位城市:"+cityName)
+    //   })
+    // }
 
     // 封装函数-获取最新资讯数据
     async getNews () {
