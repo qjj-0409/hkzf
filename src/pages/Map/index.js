@@ -28,7 +28,7 @@ export default class Map extends Component {
         return (
             <div className="map">
               {/* 顶部导航栏 */}
-              <NavHeader></NavHeader>
+              <NavHeader>地图导航</NavHeader>
 
               {/* 1.创建地图容器元素 */}
               <div id="container"></div>
