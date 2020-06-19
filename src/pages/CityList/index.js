@@ -96,8 +96,7 @@ export default class CityList extends Component {
       // 外层大盒子的key和style必填
       <div className="city" key={key} style={style}>
         <div className="title">{this.formatWord(word)}</div>
-        <div className="word-citys">
-          {/* 循环渲染每个单词对应的城市列表 */}
+        {/* 循环渲染每个单词对应的城市列表 */}
         {
           citys.map(item => {
             return (
@@ -108,9 +107,16 @@ export default class CityList extends Component {
             )
           })
         }
-        </div>
       </div>
     )
+  }
+
+  // 封装函数-获取每行数据的高度
+  // ({ index: number }): number
+  getRowHeight = ({index}) => {
+    let word = this.state.cityWord[index]
+    let citys = this.state.cityList[word]
+    return 36 + citys.length * 50
   }
 
   // 封装函数-格式化单词
@@ -152,7 +158,7 @@ export default class CityList extends Component {
               width={width} // 列表宽
               height={height} // 列表高
               rowCount={this.state.cityWord.length} // 总条数/行数
-              rowHeight={220} // 每行高度
+              rowHeight={this.getRowHeight} // 每行高度
               rowRenderer={this.rowRenderer} // 每行渲染的html内容
             />
           )}
