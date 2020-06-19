@@ -15,12 +15,14 @@
         padding: 10px 15px;
         color: #999;
     }
-    .name {
-        height: 50px;
-        line-height: 50px;
-        padding: 0 15px;
-        font-size: 16px;
-        color: #333;
-        border-bottom: 1px solid #eee
+    .word-citys {
+        border-bottom: 1px solid #eee;
+        .name {
+            height: 50px;
+            line-height: 50px;
+            padding: 0 15px;
+            font-size: 16px;
+            color: #333;
+        }
     }
 }
