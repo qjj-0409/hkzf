@@ -1,6 +1,6 @@
 // 封装公共函数
-// 导入axios
-import axios from "axios";
+// 导入axios实例对象
+import request from "./request";
 
 export let getCurrentCity = () => {
   // 优化：1.百度方法，有次数限制  2.定位很少变化，所以没必要多次调用
@@ -16,7 +16,7 @@ export let getCurrentCity = () => {
         let cityName = result.name
         // console.log("当前定位城市:", cityName)
         // 2.发送请求-根据城市名获取城市信息
-        let { data } = await axios.get('http://api-haoke-dev.itheima.net/area/info?name=' + cityName)
+        let { data } = await request.get('/area/info?name=' + cityName)
         
         // 将获取到的定位城市信息保存到本地
         localStorage.setItem('my-city', JSON.stringify(data.body))  
@@ -31,8 +31,5 @@ export let getCurrentCity = () => {
     // })
     // 简写
     return Promise.resolve(city)
-  }
-
-  
-  
+  } 
 }

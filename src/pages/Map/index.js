@@ -6,6 +6,10 @@ import './map.scss'
 // 导入封装的组件
 import NavHeader from '../../components/NavHeader/index'
 
+// 使用定位显示对应的地图
+// 1.导入封装的获取定位城市的方法
+import { getCurrentCity } from '../../utils/index'
+
 const BMap = window.BMap
 export default class Map extends Component {
     // 生命周期函数-初次渲染到页面
@@ -14,13 +18,21 @@ export default class Map extends Component {
     }
 
     // 封装函数-初始化地图
-    initMap () {
-        // 2.创建地图实例
+    async initMap () {
+        // 获取当前定位城市
+        const dingwei = await getCurrentCity()
+        // 创建地图实例
         var map = new BMap.Map("container")
-        // 3.设置地图中心点坐标
-        var point = new BMap.Point(116.404, 39.915)
-        // 4.移动地图到中心点
-        map.centerAndZoom(point, 15)
+        // 创建地址解析器实例     
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上，并调整地图视野    
+        myGeo.getPoint(dingwei.label, function(point){
+            // point表示城市对应的经纬度
+            if (point) {      
+                map.centerAndZoom(point, 11);
+            }      
+        }, 
+        dingwei.label);
     }
 
     // 生命周期函数-渲染到内存
