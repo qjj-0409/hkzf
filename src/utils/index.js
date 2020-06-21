@@ -13,15 +13,15 @@ export let getCurrentCity = () => {
       // 1.百度地图定位-根据id定位城市
       let myCity = new window.BMap.LocalCity();
       myCity.get(async (result) => {
-      let cityName = result.name
-      // console.log("当前定位城市:", cityName)
-      // 2.发送请求-根据城市名获取城市信息
-      let { data } = await axios.get('http://api-haoke-dev.itheima.net/area/info?name=' + cityName)
-      
-      // 将获取到的定位城市信息保存到本地
-      localStorage.setItem('my-city', JSON.stringify(data.body))  
-      // 将获取到的定位城市信息返回
-      resolve(data.body)
+        let cityName = result.name
+        // console.log("当前定位城市:", cityName)
+        // 2.发送请求-根据城市名获取城市信息
+        let { data } = await axios.get('http://api-haoke-dev.itheima.net/area/info?name=' + cityName)
+        
+        // 将获取到的定位城市信息保存到本地
+        localStorage.setItem('my-city', JSON.stringify(data.body))  
+        // 将获取到的定位城市信息返回
+        resolve(data.body)
       })
     })
   } else {

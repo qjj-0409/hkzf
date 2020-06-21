@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { NavBar, Icon, Toast } from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 
 import './citylist.scss'
 
-// 导入axios插件
-import axios from 'axios'
+// 导入axios实例对象
+import request from '../../utils/request'
 
 // react-virtualized的基本使用
 // 1.下载安装react-virtualized插件
@@ -37,13 +37,13 @@ export default class CityList extends Component {
   }
   // 封装函数-获取城市列表
   async getCityList () {
-    const { data } = await axios.get('http://api-haoke-dev.itheima.net/area/city?level=1')
+    const { data } = await request.get('/area/city?level=1')
     // console.log(data.body)
     // 遍历城市列表，格式化数据
     const { cityList, cityWord} = this.formatCityList(data.body)
 
     // 发请求获取热门城市
-    const hot = await axios.get('http://api-haoke-dev.itheima.net/area/hot')
+    const hot = await request.get('/area/hot')
     // console.log('热门城市：',hot.data.body)
     // 追加热门城市到城市列表
     cityList['hot'] = hot.data.body

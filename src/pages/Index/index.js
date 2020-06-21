@@ -13,8 +13,8 @@ import nav2 from '../../assets/images/nav-2.png'
 import nav3 from '../../assets/images/nav-3.png'
 import nav4 from '../../assets/images/nav-4.png'
 
-// 导入axios
-import axios from 'axios'
+// 导入axios请求实例
+import request from '../../utils/request'
 
 // 导入公共函数
 import { getCurrentCity } from '../../utils/index'
@@ -49,7 +49,7 @@ export default class Index extends Component {
       isAutoPlay: false, // 控制是否自动轮播
       groups: [], // 租房小组数据
       news: [], // 最新资讯数据
-      currentCity: '' // 当前城市
+      currentCity: {} // 当前城市信息
     }
 
     // 生命周期函数-初次渲染到页面
@@ -62,15 +62,16 @@ export default class Index extends Component {
       this.getNews()
       // 调用公共函数-获取当前定位城市
       let dingwei = await getCurrentCity()
+      // console.log(dingwei)
       this.setState({
-        currentCity: dingwei.label
+        currentCity: dingwei
       })
     }
 
     // 封装函数-获取轮播图数据
     async getSwiperData () {
       // 1.发送请求获取轮播图数据
-      const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/swiper')
+      const { data } = await request.get('/home/swiper')
       // 2.如果获取轮播图数据成功
       if (data.status === 200) {
         // 修改state中的data数据
@@ -86,7 +87,7 @@ export default class Index extends Component {
 
     // 封装函数-获取租房小组数据
     async getGroups () {
-      const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/groups?area=AREA%7C88cff55c-aaa4-e2e0')
+      const { data } = await request.get(`/home/groups?area=${this.state.currentCity.value}`)
       // console.log(data.body)
       this.setState({
         groups: data.body
@@ -107,7 +108,7 @@ export default class Index extends Component {
 
     // 封装函数-获取最新资讯数据
     async getNews () {
-      const { data } = await axios.get('http://api-haoke-dev.itheima.net/home/news?area=AREA%7C88cff55c-aaa4-e2e0')
+      const { data } = await request.get(`/home/news?area=${this.state.currentCity.value}`)
       // console.log(data.body)
       this.setState({
         news: data.body
@@ -124,7 +125,7 @@ export default class Index extends Component {
           style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
         >
           <img
-            src={`http://api-haoke-dev.itheima.net${item.imgSrc}`}
+            src={`http://api-haoke-web.itheima.net${item.imgSrc}`}
             alt=""
             style={{ width: '100%', verticalAlign: 'top' }}
             onLoad={() => {
@@ -174,7 +175,7 @@ export default class Index extends Component {
                 <h3>{item.title}</h3>
                 <p>{item.desc}</p>
               </div>
-              <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt="" />
+              <img src={`http://api-haoke-web.itheima.net${item.imgSrc}`} alt="" />
             </Flex>
           )}
         />
@@ -186,7 +187,7 @@ export default class Index extends Component {
       return this.state.news.map(item => {
         return (
           <li className="item" key={item.id}>
-            <img src={`http://api-haoke-dev.itheima.net${item.imgSrc}`} alt=""/>
+            <img src={`http://api-haoke-web.itheima.net${item.imgSrc}`} alt=""/>
             <div className="item-right">
               <h3>{item.title}</h3>
               <p>
@@ -213,7 +214,7 @@ export default class Index extends Component {
                       onClick={() => {
                         this.props.history.push('/citylist')
                       }}
-                    >{this.state.currentCity}</span>
+                    >{this.state.currentCity.label}</span>
                     <i className="iconfont icon-arrow"></i>
                   </div>
                   <div className="searchForm">
@@ -267,8 +268,6 @@ export default class Index extends Component {
                   <ul>
                     {/* 调用函数-渲染最新资讯 */}
                     { this.renderNews() }
-                    
-                    
                   </ul>
                 </div>
 
