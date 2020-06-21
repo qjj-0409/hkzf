@@ -94,7 +94,16 @@ export default class Map extends Component {
         // 给覆盖物绑定点击事件
         // addEventListener(event: String, handler: Function)
         label.addEventListener('click', () => {
-          console.log('点击了覆盖物')
+          // 放大地图到指定区
+          this.map.centerAndZoom(point, 13)
+          // 百度地图Bug：清除覆盖物必须使用定时器，否则会报错
+          setTimeout(() => {
+            // 默认点击放大地图后，原来的覆盖物还存在
+            // 需求：清除之前的覆盖物，再生成新的覆盖物
+            this.map.clearOverlays()
+          }, 10)
+          // 显示指定区的房源信息和覆盖物
+          this.renderOverlay(item.value)
         })
         this.map.addOverlay(label)
       })
