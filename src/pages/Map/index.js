@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 // 引入样式文件
 import './map.scss'
+// 引入局部样式
+import styles from './map.module.css'
 
 // 导入封装的组件
 import NavHeader from '../../components/NavHeader/index'
@@ -9,6 +11,8 @@ import NavHeader from '../../components/NavHeader/index'
 // 使用定位显示对应的地图
 // 1.导入封装的获取定位城市的方法
 import { getCurrentCity } from '../../utils/index'
+
+console.log(styles)
 
 const BMap = window.BMap
 export default class Map extends Component {
@@ -35,6 +39,23 @@ export default class Map extends Component {
                 map.addControl(new BMap.ScaleControl()) // 比例尺
                 map.addControl(new BMap.OverviewMapControl()) // 缩略地图
                 map.addControl(new BMap.MapTypeControl()) // 地图类型
+                // 添加地图覆盖物
+                var opts = {
+                  position: point,    // 指定文本标注所在的地理位置
+                  offset: new BMap.Size(10, -10)    //设置文本偏移量
+                }
+                // 创建文本标注对象
+                var label = new BMap.Label("", opts)
+                // 设置文本标注的内容
+                label.setContent(`
+                  <div class="${styles.bubble}">
+                    <p class="${styles.name}">朝阳区</p>
+                    <p>10套</p>
+                  </div>
+                `)
+                // 设置文本的样式
+                label.setStyle({})
+                map.addOverlay(label)
             }
         },
         dingwei.label)
