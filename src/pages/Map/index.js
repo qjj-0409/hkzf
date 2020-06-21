@@ -24,15 +24,20 @@ export default class Map extends Component {
         // 创建地图实例
         var map = new BMap.Map("container")
         // 创建地址解析器实例     
-        var myGeo = new BMap.Geocoder();
+        var myGeo = new BMap.Geocoder()
         // 将地址解析结果显示在地图上，并调整地图视野    
         myGeo.getPoint(dingwei.label, function(point){
             // point表示城市对应的经纬度
             if (point) {      
-                map.centerAndZoom(point, 11);
-            }      
-        }, 
-        dingwei.label);
+                map.centerAndZoom(point, 11)
+                // 添加地图控件
+                map.addControl(new BMap.NavigationControl()) // 缩放控件
+                map.addControl(new BMap.ScaleControl()) // 比例尺
+                map.addControl(new BMap.OverviewMapControl()) // 缩略地图
+                map.addControl(new BMap.MapTypeControl()) // 地图类型
+            }
+        },
+        dingwei.label)
     }
 
     // 生命周期函数-渲染到内存
