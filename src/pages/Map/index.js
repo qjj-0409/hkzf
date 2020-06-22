@@ -152,6 +152,77 @@ export default class Map extends Component {
           <NavHeader>地图导航</NavHeader>  
           {/* 1.创建地图容器元素 */}
           <div id="container"></div>
+
+          {/* 小区房源信息 */}
+          <div className={[styles.houselist, styles.show].join(' ')}>
+            {/* 标题 */}
+            <div className={styles.titleWrap}>
+              <h1 className={styles.listTitle}>房屋列表</h1>
+              <a className={styles.titleMore} href="/house/list">更多房源</a>
+            </div>
+            {/* 房源信息 */}
+            <div className={styles.houseItems}>
+              <div className={styles.house}>
+                <div className={styles.imgWrap}>
+                  <img
+                    className={styles.img}
+                    src="http://api-haoke-web.itheima.net/newImg/7bl2kl92b.jpg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.title}>整租 · 世嘉博苑 3室1厅 7000元</h3>
+                  <div className={styles.desc}>三室/112/南|北/世嘉博苑</div>
+                  <div>
+                    <span className={[styles.tag, styles.tag1].join(' ')}>近地铁</span>
+                  </div>
+                  <div className={styles.price}>
+                    <span className={styles.priceNum}>7000</span>元/月
+                  </div>
+                </div>
+              </div>
+              <div className={styles.house}>
+                <div className={styles.imgWrap}>
+                  <img
+                    className={styles.img}
+                    src="http://api-haoke-web.itheima.net/newImg/7bl2kl92b.jpg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.title}>整租 · 世嘉博苑 3室1厅 7000元</h3>
+                  <div className={styles.desc}>三室/112/南|北/世嘉博苑</div>
+                  <div>
+                    <span className={[styles.tag, styles.tag1].join(' ')}>近地铁</span>
+                  </div>
+                  <div className={styles.price}>
+                    <span className={styles.priceNum}>7000</span>元/月
+                  </div>
+                </div>
+              </div>
+              <div className={styles.house}>
+                <div className={styles.imgWrap}>
+                  <img
+                    className={styles.img}
+                    src="http://api-haoke-web.itheima.net/newImg/7bl2kl92b.jpg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.title}>整租 · 世嘉博苑 3室1厅 7000元</h3>
+                  <div className={styles.desc}>三室/112/南|北/世嘉博苑</div>
+                  <div>
+                    <span className={[styles.tag, styles.tag1].join(' ')}>近地铁</span>
+                  </div>
+                  <div className={styles.price}>
+                    <span className={styles.priceNum}>7000</span>元/月
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            
+          </div>
         </div>
       )
     }
