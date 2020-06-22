@@ -105,7 +105,7 @@ export default class Map extends Component {
         })
         // 给覆盖物绑定点击事件
         // addEventListener(event: String, handler: Function)
-        label.addEventListener('click', () => {
+        label.addEventListener('click', (e) => {
           // 获取地图缩放级别
           let zoom = this.map.getZoom()
           // 如果当前地图缩放级别是11，点击放大到13并展示覆盖物
@@ -115,12 +115,17 @@ export default class Map extends Component {
             // 如果当前地图缩放级别是13，点击放大到15并展示覆盖物
             this.updateMap(15, item.value, point, 'rect')
           } else if (zoom === 15) {
+            // 优化-移动被点击的小区到地图中心
+            this.moveHouseToCenter(e)
+            
             // 如果当前地图缩放级别是15，点击不放大，发送请求，获取当前小区房子列表信息
             this.getHouseList(item.value)
+            
             // 展示小区房源列表
             this.setState({
               isShow: true
             })
+
             // 移动地图，隐藏房源列表
             this.map.addEventListener('movestart', () => {
               this.setState({
@@ -131,6 +136,21 @@ export default class Map extends Component {
         })
         this.map.addOverlay(label)
       })
+    }
+
+    // 封装函数-移动被点击小区到地图中心点
+    moveHouseToCenter = e => {
+      // 1.获取点击位置的坐标
+      let clickX = e.changedTouches[0].clientX
+      let clickY = e.changedTouches[0].clientY
+      // 2.获取中心点坐标
+      let centerX = window.innerWidth / 2
+      let centerY = (window.innerHeight - 330) / 2
+      // 3.计算移动距离 点击位置X/Y - 中心点位置X/Y
+      let distanceX = clickX - centerX
+      let distanceY = clickY - centerY
+      // 移动地图 panBy(x: Number, y: Number, opts: PanOptions)
+      this.map.panBy(-distanceX, -distanceY)
     }
 
     // 封装函数-放大地图，显示覆盖物
