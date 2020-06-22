@@ -17,6 +17,10 @@ import request from '../../utils/request'
 
 const BMap = window.BMap
 export default class Map extends Component {
+    state = {
+      list: [], // 小区房子信息
+      count: '' // 房子数量
+    }
     // 生命周期函数-初次渲染到页面
     componentDidMount() {
       this.initMap()
@@ -26,7 +30,6 @@ export default class Map extends Component {
     async initMap () {
       // 获取当前定位城市
       const dingwei = await getCurrentCity()
-      console.log('定位城市：', dingwei)
       // 创建地图实例
       var map = new BMap.Map("container")
       /**
@@ -51,7 +54,6 @@ export default class Map extends Component {
           
           // 调用函数-获取房源信息和展示覆盖物
           this.renderOverlay(dingwei.value)
-          
           
         }
       },
@@ -104,7 +106,7 @@ export default class Map extends Component {
             this.updateMap(15, item.value, point)
           } else if (zoom === 15) {
             // 如果当前地图缩放级别是15，点击不放大，发送请求，获取当前小区房子列表信息
-            this.getHouseList()
+            this.getHouseList(item.value)
           }
         })
         this.map.addOverlay(label)
@@ -127,9 +129,19 @@ export default class Map extends Component {
     }
 
     // 封装函数-获取小区房子列表
-    getHouseList = () => {
+    getHouseList = async (cityId) => {
       // 发请求获取房子列表
-      console.log('不放大地图，获取房源信息')
+      const { data: { body } } = await request.get('/houses',{
+        params: {
+          cityId
+        }
+      })
+      console.log('小区房源列表',body)
+      // 将获取到房源信息赋值给state
+      this.setState({
+        list: body.list,
+        count: body.count
+      })
     }
 
     // 生命周期函数-渲染到内存
