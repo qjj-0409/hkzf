@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Toast } from 'antd-mobile';
 
 // 引入样式文件
 import './map.scss'
@@ -63,12 +64,16 @@ export default class Map extends Component {
 
     // 封装函数-发送请求获取房源信息显示对应覆盖物
     renderOverlay = async (id, type) => {
+      // 发请求之前显loading Toast.loading(content, duration, onClose, mask)
+      Toast.loading('加载中...', 0)
       // 发送请求获取所有区的房源信息
       const {data} = await request.get('/area/map',{
         params: {
           id
         }
       })
+      // 发送请求成功关闭loading
+      Toast.hide()
       // 循环遍历数据创建覆盖物
       data.body.forEach(item => {
         // 创建点坐标 longitude 经度  latitude 纬度
@@ -120,7 +125,7 @@ export default class Map extends Component {
             
             // 如果当前地图缩放级别是15，点击不放大，发送请求，获取当前小区房子列表信息
             this.getHouseList(item.value)
-            
+
             // 展示小区房源列表
             this.setState({
               isShow: true
@@ -169,13 +174,16 @@ export default class Map extends Component {
 
     // 封装函数-获取小区房子列表
     getHouseList = async (cityId) => {
+      // 发送请求前显示loading
+      Toast.loading('加载中...', 0)
       // 发请求获取房子列表
       const { data: { body } } = await request.get('/houses',{
         params: {
           cityId
         }
       })
-      console.log('小区房源列表',body)
+      // 请求成功后关闭loading
+      Toast.hide()
       // 将获取到房源信息赋值给state
       this.setState({
         list: body.list,
