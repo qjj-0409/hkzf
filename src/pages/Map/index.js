@@ -94,19 +94,42 @@ export default class Map extends Component {
         // 给覆盖物绑定点击事件
         // addEventListener(event: String, handler: Function)
         label.addEventListener('click', () => {
-          // 放大地图到指定区
-          this.map.centerAndZoom(point, 13)
-          // 百度地图Bug：清除覆盖物必须使用定时器，否则会报错
-          setTimeout(() => {
-            // 默认点击放大地图后，原来的覆盖物还存在
-            // 需求：清除之前的覆盖物，再生成新的覆盖物
-            this.map.clearOverlays()
-          }, 10)
-          // 显示指定区的房源信息和覆盖物
-          this.renderOverlay(item.value)
+          // 获取地图缩放级别
+          let zoom = this.map.getZoom()
+          // 如果当前地图缩放级别是11，点击放大到13并展示覆盖物
+          if (zoom === 11) {
+            this.updateMap(13, item.value, point)
+          } else if (zoom === 13) {
+            // 如果当前地图缩放级别是13，点击放大到15并展示覆盖物
+            this.updateMap(15, item.value, point)
+          } else if (zoom === 15) {
+            // 如果当前地图缩放级别是15，点击不放大，发送请求，获取当前小区房子列表信息
+            this.getHouseList()
+          }
         })
         this.map.addOverlay(label)
       })
+    }
+
+    // 封装函数-放大地图，显示覆盖物
+    updateMap = (zoom, id, point) => {
+      console.log('当前地图缩放级别：', zoom)
+      // 放大地图到指定区
+      this.map.centerAndZoom(point, zoom)
+      // 百度地图Bug：清除覆盖物必须使用定时器，否则会报错
+      setTimeout(() => {
+        // 默认点击放大地图后，原来的覆盖物还存在
+        // 需求：清除之前的覆盖物，再生成新的覆盖物
+        this.map.clearOverlays()
+      }, 10)
+      // 显示指定区的房源信息和覆盖物
+      this.renderOverlay(id)
+    }
+
+    // 封装函数-获取小区房子列表
+    getHouseList = () => {
+      // 发请求获取房子列表
+      console.log('不放大地图，获取房源信息')
     }
 
     // 生命周期函数-渲染到内存
