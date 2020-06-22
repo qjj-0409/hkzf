@@ -54,7 +54,7 @@ export default class Map extends Component {
           map.addControl(new BMap.MapTypeControl()) // 地图类型
           
           // 调用函数-获取房源信息和展示覆盖物
-          this.renderOverlay(dingwei.value)
+          this.renderOverlay(dingwei.value, 'bubble')
           
         }
       },
@@ -62,7 +62,7 @@ export default class Map extends Component {
     }
 
     // 封装函数-发送请求获取房源信息显示对应覆盖物
-    renderOverlay = async (id) => {
+    renderOverlay = async (id, type) => {
       // 发送请求获取所有区的房源信息
       const {data} = await request.get('/area/map',{
         params: {
@@ -83,12 +83,22 @@ export default class Map extends Component {
         // 创建文本标注对象
         var label = new BMap.Label("", opts)
         // 设置文本标注的内容
-        label.setContent(`
-          <div class="${styles.bubble}">
-            <p class="${styles.name}">${item.label}</p>
-            <p>${item.count}套</p>
-          </div>
-        `)
+        if (type === 'bubble') {
+          label.setContent(`
+            <div class="${styles.bubble}">
+              <p class="${styles.name}">${item.label}</p>
+              <p>${item.count}套</p>
+            </div>
+          `)
+        } else if (type === 'rect') {
+          label.setContent(`
+            <div class="${styles.rect}">
+              <span class="${styles.housename}">${item.label}</span>
+              <span class="${styles.housenum}">${item.count}套</span>
+              <i class="${styles.arrow}"></i>
+            </div>
+          `)
+        }
         // 设置文本的样式
         label.setStyle({
           border: 'none', // 去掉label标签的边框和padding
@@ -101,10 +111,10 @@ export default class Map extends Component {
           let zoom = this.map.getZoom()
           // 如果当前地图缩放级别是11，点击放大到13并展示覆盖物
           if (zoom === 11) {
-            this.updateMap(13, item.value, point)
+            this.updateMap(13, item.value, point, 'bubble')
           } else if (zoom === 13) {
             // 如果当前地图缩放级别是13，点击放大到15并展示覆盖物
-            this.updateMap(15, item.value, point)
+            this.updateMap(15, item.value, point, 'rect')
           } else if (zoom === 15) {
             // 如果当前地图缩放级别是15，点击不放大，发送请求，获取当前小区房子列表信息
             this.getHouseList(item.value)
@@ -119,7 +129,7 @@ export default class Map extends Component {
     }
 
     // 封装函数-放大地图，显示覆盖物
-    updateMap = (zoom, id, point) => {
+    updateMap = (zoom, id, point, type) => {
       console.log('当前地图缩放级别：', zoom)
       // 放大地图到指定区
       this.map.centerAndZoom(point, zoom)
@@ -130,7 +140,7 @@ export default class Map extends Component {
         this.map.clearOverlays()
       }, 10)
       // 显示指定区的房源信息和覆盖物
-      this.renderOverlay(id)
+      this.renderOverlay(id, type)
     }
 
     // 封装函数-获取小区房子列表
