@@ -69,7 +69,6 @@ export default class Map extends Component {
           id
         }
       })
-      console.log(data.body)
       // 循环遍历数据创建覆盖物
       data.body.forEach(item => {
         // 创建点坐标 longitude 经度  latitude 纬度
@@ -122,6 +121,12 @@ export default class Map extends Component {
             this.setState({
               isShow: true
             })
+            // 移动地图，隐藏房源列表
+            this.map.addEventListener('movestart', () => {
+              this.setState({
+                isShow: false
+              })
+            })
           }
         })
         this.map.addOverlay(label)
@@ -130,7 +135,6 @@ export default class Map extends Component {
 
     // 封装函数-放大地图，显示覆盖物
     updateMap = (zoom, id, point, type) => {
-      console.log('当前地图缩放级别：', zoom)
       // 放大地图到指定区
       this.map.centerAndZoom(point, zoom)
       // 百度地图Bug：清除覆盖物必须使用定时器，否则会报错
