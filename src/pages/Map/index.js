@@ -19,7 +19,8 @@ const BMap = window.BMap
 export default class Map extends Component {
     state = {
       list: [], // 小区房子信息
-      count: '' // 房子数量
+      count: '', // 房子数量
+      isShow: false // 控制房源列表的展示和隐藏
     }
     // 生命周期函数-初次渲染到页面
     componentDidMount() {
@@ -107,6 +108,10 @@ export default class Map extends Component {
           } else if (zoom === 15) {
             // 如果当前地图缩放级别是15，点击不放大，发送请求，获取当前小区房子列表信息
             this.getHouseList(item.value)
+            // 展示小区房源列表
+            this.setState({
+              isShow: true
+            })
           }
         })
         this.map.addOverlay(label)
@@ -144,6 +149,59 @@ export default class Map extends Component {
       })
     }
 
+    // 封装函数-格式化tag样式
+    formatTag = (i) => {
+      switch (i) {
+        case 0:
+          return styles.tag1
+        case 1:
+          return styles.tag2
+        case 2:
+          return styles.tag3
+        default:
+          break;
+      }
+    }
+
+    // 封装函数-渲染房源列表
+    renderHouseList = () => {
+      return this.state.list.map((item) => {
+        return (
+          <div
+            className={styles.house}
+            key={item.houseCode}
+          >
+            <div className={styles.imgWrap}>
+              <img
+                className={styles.img}
+                src={`http://api-haoke-web.itheima.net${item.houseImg}`}
+                alt=""
+              />
+            </div>
+            <div className={styles.content}>
+              <h3 className={styles.title}>{item.title}</h3>
+              <div className={styles.desc}>{item.desc}</div>
+              <div>
+                {
+                  item.tags.map((tag, i) => {
+                    return (
+                      <span
+                        className={[styles.tag, this.formatTag(i)].join(' ')}
+                        key={i}
+                    >{tag}</span>
+                    )
+                  })
+                }
+              </div>
+              <div className={styles.price}>
+                <span className={styles.priceNum}>{item.price}</span>元/月
+              </div>
+            </div>
+          </div>
+        )
+      })
+    }
+
     // 生命周期函数-渲染到内存
     render() {
       return (
@@ -154,7 +212,7 @@ export default class Map extends Component {
           <div id="container"></div>
 
           {/* 小区房源信息 */}
-          <div className={[styles.houselist, styles.show].join(' ')}>
+          <div className={[styles.houselist, this.state.isShow ? styles.show : ''].join(' ')}>
             {/* 标题 */}
             <div className={styles.titleWrap}>
               <h1 className={styles.listTitle}>房屋列表</h1>
@@ -162,64 +220,8 @@ export default class Map extends Component {
             </div>
             {/* 房源信息 */}
             <div className={styles.houseItems}>
-              <div className={styles.house}>
-                <div className={styles.imgWrap}>
-                  <img
-                    className={styles.img}
-                    src="http://api-haoke-web.itheima.net/newImg/7bl2kl92b.jpg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.title}>整租 · 世嘉博苑 3室1厅 7000元</h3>
-                  <div className={styles.desc}>三室/112/南|北/世嘉博苑</div>
-                  <div>
-                    <span className={[styles.tag, styles.tag1].join(' ')}>近地铁</span>
-                  </div>
-                  <div className={styles.price}>
-                    <span className={styles.priceNum}>7000</span>元/月
-                  </div>
-                </div>
-              </div>
-              <div className={styles.house}>
-                <div className={styles.imgWrap}>
-                  <img
-                    className={styles.img}
-                    src="http://api-haoke-web.itheima.net/newImg/7bl2kl92b.jpg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.title}>整租 · 世嘉博苑 3室1厅 7000元</h3>
-                  <div className={styles.desc}>三室/112/南|北/世嘉博苑</div>
-                  <div>
-                    <span className={[styles.tag, styles.tag1].join(' ')}>近地铁</span>
-                  </div>
-                  <div className={styles.price}>
-                    <span className={styles.priceNum}>7000</span>元/月
-                  </div>
-                </div>
-              </div>
-              <div className={styles.house}>
-                <div className={styles.imgWrap}>
-                  <img
-                    className={styles.img}
-                    src="http://api-haoke-web.itheima.net/newImg/7bl2kl92b.jpg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.title}>整租 · 世嘉博苑 3室1厅 7000元</h3>
-                  <div className={styles.desc}>三室/112/南|北/世嘉博苑</div>
-                  <div>
-                    <span className={[styles.tag, styles.tag1].join(' ')}>近地铁</span>
-                  </div>
-                  <div className={styles.price}>
-                    <span className={styles.priceNum}>7000</span>元/月
-                  </div>
-                </div>
-              </div>
-
+              {/* 调用函数-渲染房源列表信息 */}
+              { this.renderHouseList() }
             </div>
             
           </div>

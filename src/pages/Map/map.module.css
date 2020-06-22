@@ -76,6 +76,7 @@
 .content {
   line-height: 22px;
   margin-left: 12px;
+  width: 215px;
 }
 .title {
   overflow: hidden;
