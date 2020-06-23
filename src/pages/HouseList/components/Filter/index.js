@@ -16,7 +16,8 @@ let titleStatus = {
 
 export default class Filter extends Component {
   state = {
-    titleStatus: titleStatus
+    titleStatus: titleStatus, // 四个标题的高亮状态
+    openType: '' // 被打开的标题type
   }
   // 封装函数-点击修改标题高亮状态
   onTitleClick = (type) => {
@@ -24,9 +25,22 @@ export default class Filter extends Component {
       titleStatus: {
         ...titleStatus, // 这种方式可以实现只有当前点击的高亮，其他的不高亮
         [type]: true
-      }
+      },
+      openType: type
     })
   }
+
+  // 封装函数-渲染下拉选择框
+  renderFilterPicker = () => {
+    // 如果是区域、方式、租金则显示FilterPicker，否则显示FilterMore
+    let { openType } = this.state
+    if (openType === 'area' || openType === 'mode' || openType === 'price') {
+      return <FilterPicker />
+    } else if (openType === 'more') {
+      return null
+    }
+  }
+
   // 生命周期函数-渲染到内存
   render() {
     return (
@@ -41,8 +55,9 @@ export default class Filter extends Component {
             onTitleClick={this.onTitleClick}
           />
 
-          {/* 前三个菜单对应的内容： */}
-          {/* <FilterPicker /> */}
+          {/* 前三个菜单对应的内容：下拉选择框 */}
+          {/* 调用函数-渲染下拉选择框 */}
+          { this.renderFilterPicker() }
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
