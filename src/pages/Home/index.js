@@ -86,10 +86,10 @@ class Home extends React.Component {
                 */}
                 
                 {/* 挖坑显示四个组件 */}
-                <Route path="/home/index" component={Index}></Route>
-                <Route path="/home/houselist" component={HouseList}></Route>
-                <Route path="/home/news" component={News}></Route>
-                <Route path="/home/profile" component={Profile}></Route>
+                <Route exact path="/home/index" component={Index}></Route>
+                <Route exact path="/home/houselist" component={HouseList}></Route>
+                <Route exact path="/home/news" component={News}></Route>
+                <Route exact path="/home/profile" component={Profile}></Route>
 
                 <TabBar
                   unselectedTintColor="#949494" // 未选中的字体颜色

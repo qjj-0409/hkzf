@@ -12,16 +12,30 @@ const titleList = [
   { title: '筛选', type: 'more' }
 ]
 
-export default function FilterTitle() {
+export default function FilterTitle(props) {
+  console.log(props)
+  let { titleStatus, onTitleClick } = props
   return (
     <Flex align="center" className={styles.root}>
-      <Flex.Item>
-        {/* 选中类名： selected */}
-        <span className={[styles.dropdown, styles.selected].join(' ')}>
-          <span>区域</span>
-          <i className="iconfont icon-arrow" />
-        </span>
-      </Flex.Item>
+      {
+        titleList.map((item, index) => {
+          return (
+            <Flex.Item
+              key={item.type}
+              onClick={() => {
+                // 调用父组件中的函数修改高亮状态
+                onTitleClick(item.type)
+              }}
+            >
+              {/* 选中类名： selected */}
+              <span className={[styles.dropdown, titleStatus[item.type] ? styles.selected : ''].join(' ')}>
+                <span>{item.title}</span>
+                <i className="iconfont icon-arrow" />
+              </span>
+            </Flex.Item>
+          )
+        })
+      }
     </Flex>
   )
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-// 导入Filter 筛选条件组件
-import Filter from './components/Filter'
 // 导入搜索导航栏组件
 import SearchHeader from '../../components/SearchHeader'
+// 导入Filter 筛选条件组件
+import Filter from './components/Filter'
 // 导入样式
 import './index.scss'
 
@@ -32,7 +32,7 @@ export default class Houselist extends Component {
           
 
           {/* Filter 筛选条件组件 */}
-          {/* <Filter></Filter> */}
+          <Filter></Filter>
       </div>
     )
   }
