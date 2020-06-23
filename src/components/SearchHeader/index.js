@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 class SearchHeader extends Component {
   render() {
-    console.log(this.props)
     return (
       <div className="search">
         <div className="search-left">

@@ -13,7 +13,6 @@ const titleList = [
 ]
 
 export default function FilterTitle(props) {
-  console.log(props)
   let { titleStatus, onTitleClick } = props
   return (
     <Flex align="center" className={styles.root}>

@@ -35,10 +35,23 @@ export default class Filter extends Component {
     // 如果是区域、方式、租金则显示FilterPicker，否则显示FilterMore
     let { openType } = this.state
     if (openType === 'area' || openType === 'mode' || openType === 'price') {
-      return <FilterPicker />
+      return <FilterPicker onCancel={this.onCancel} onSave={this.onSave} />
     } else if (openType === 'more') {
       return null
     }
+  }
+
+  // 声明函数-下拉选择框取消按钮事件
+  onCancel = () => {
+    this.setState({
+      openType: ''
+    })
+  }
+  // 声明函数-下拉选择框确认按钮事件
+  onSave = () => {
+    this.setState({
+      openType: ''
+    })
   }
 
   // 生命周期函数-渲染到内存
