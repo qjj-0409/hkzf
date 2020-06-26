@@ -101,6 +101,25 @@ export default class Filter extends Component {
     })
   }
 
+  // 封装函数-控制FilterMore的显示和隐藏
+  renderMore () {
+    let { openType, filtersData } = this.state
+    let data = {
+      roomType: filtersData.roomType, // 户型
+      oriented: filtersData.oriented, // 朝向
+      floor: filtersData.floor, // 楼层
+      characteristic: filtersData.characteristic // 房屋亮点
+    }
+    if (openType === 'more') {
+      return <FilterMore
+        data={data}
+        onSave={this.onSave}
+      />
+    } else {
+      return null
+    }
+  }
+
   // 声明函数-下拉选择框取消按钮事件
   onCancel = () => {
     this.setState({
@@ -147,7 +166,7 @@ export default class Filter extends Component {
           { this.renderFilterPicker() }
 
           {/* 最后一个菜单对应的内容： */}
-          {/* <FilterMore /> */}
+          { this.renderMore() }
         </div>
       </div>
     )
