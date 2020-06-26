@@ -111,8 +111,11 @@ export default class Filter extends Component {
       characteristic: filtersData.characteristic // 房屋亮点
     }
     if (openType === 'more') {
+      // 传入默认值
+      let defaultValues = this.state.selectedValues['more']
       return <FilterMore
         data={data}
+        defaultValues={defaultValues}
         onSave={this.onSave}
       />
     } else {

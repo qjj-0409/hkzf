@@ -6,7 +6,7 @@ import styles from './index.module.css'
 
 export default class FilterMore extends Component {
   state = {
-    moreValues: [] // 选中的值
+    moreValues: this.props.defaultValues // 选中的值
   }
   // 渲染标签
   renderFilters(arr) {
