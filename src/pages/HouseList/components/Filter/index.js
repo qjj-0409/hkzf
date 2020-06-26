@@ -123,6 +123,17 @@ export default class Filter extends Component {
     }
   }
 
+  // 封装函数-点击 区域|方式|租金 渲染遮罩层
+  renderMask = () => {
+    let { openType } = this.state
+    if (openType === 'area' || openType === 'mode' || openType === 'price') {
+      return <div className={styles.mask} />
+    } else {
+      return null
+    }
+    
+  }
+
   // 声明函数-下拉选择框取消按钮事件
   onCancel = () => {
     this.setState({
@@ -181,7 +192,7 @@ export default class Filter extends Component {
     return (
       <div className={styles.root}>
         {/* 前三个菜单的遮罩层 */}
-        {/* <div className={styles.mask} /> */}
+        { this.renderMask() }
 
         <div className={styles.content}>
           {/* 标题栏 */}
