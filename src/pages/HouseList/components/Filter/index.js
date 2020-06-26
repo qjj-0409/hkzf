@@ -70,6 +70,8 @@ export default class Filter extends Component {
       }
       return (
         <FilterPicker
+          // 解决办法：给FilterPicker绑定key属性，每次切换openType都会变化
+          key={openType}
           data={data}
           cols={cols}
           onCancel={this.onCancel}

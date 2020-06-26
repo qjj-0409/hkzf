@@ -88,8 +88,14 @@ const province = [
 ]
 
 export default class FilterPicker extends Component {
-  state = {
-    value: this.props.defaultValues // 存放选择框选中的值
+  // 不关闭FilterPicker直接切换不会执行constructor()
+  // 就不能得到this.props.defaultValues的值，所以切换默认值没有选中
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: this.props.defaultValues // 存放选择框选中的值
+    }
+    console.log('constructor执行了')
   }
   render() {
     console.log('FilterPicker:', this.props)
