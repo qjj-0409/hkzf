@@ -88,14 +88,14 @@ export default class Filter extends Component {
   async getFiltersData () {
     // 获取定位城市
     const dingwei = await getCurrentCity()
-    console.log(dingwei)
+    // console.log(dingwei)
     // http://api-haoke-web.itheima.net/houses/condition?id=AREA%7C88cff55c-aaa4-e2e0
     const { data } = await request.get('/houses/condition', {
       params: {
         id: dingwei.value
       }
     })
-    console.log('房屋查询条件：', data)
+    // console.log('房屋查询条件：', data)
     this.setState({
       filtersData: data.body
     })
@@ -140,7 +140,33 @@ export default class Filter extends Component {
       },
       openType: ''
     }, () => {
-      console.log('接收传来的条件：', this.state.selectedValues)
+      // console.log('接收传来的条件：', this.state.selectedValues)
+      let { area, mode, price, more } = this.state.selectedValues
+      // 接口要求的参数类型
+      /**
+       * area:'AREA|88cff55c-aaa4-e2e0' 或者 subway:'SUBWAY|88cff55c-aaa4-e2e0'
+       * more: 'CHAR|76eb0532-8099-d1f4,FLOOR|1,AREA|88cff55c-aaa4-e2e0'
+       * pice: 'PRICE|88cff55c-aaa4-e2e0'
+       * mode: 'true' 或 'false' 或 'null'
+       */
+      // 格式化
+      let filters = {}
+      filters.mode = mode[0]
+      filters.more = more.join(',')
+      filters.price = price[0]
+      // 单独处理area
+      // 如果数组长度为2，表示没有选择
+      // 如果数组长度为3，表示选择了
+      //   再判断数组最后一项是否为null，
+      //   如果最后一项是null，选数组[1]，否则选数组[2]
+      let areaName = area[0]
+      let areaValue = 'null' // 没选
+      if (area.length === 3) {
+        areaValue = area[2] === 'null' ? area[1] : area[2]
+      }
+      filters[areaName] = areaValue
+      // 将格式化后的选择项传递给HouseList组件
+      this.props.onFilter(filters)
     })
   }
 

@@ -95,10 +95,10 @@ export default class FilterPicker extends Component {
     this.state = {
       value: this.props.defaultValues // 存放选择框选中的值
     }
-    console.log('constructor执行了')
+    // console.log('constructor执行了')
   }
   render() {
-    console.log('FilterPicker:', this.props)
+    // console.log('FilterPicker:', this.props)
     let { onCancel, onSave, data, cols } = this.props
     return (
       <>

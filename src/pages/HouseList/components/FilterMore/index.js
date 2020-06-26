@@ -23,15 +23,14 @@ export default class FilterMore extends Component {
             // 点击的时候先判断是否已被选中
             // 如果没有被选中，则点击追加进数组；
             // 如果已经被选中，则点击删除当前条件
-            if (newValues.indexOf(item.value) === -1) {
+            let index = newValues.indexOf(item.value)
+            if (index === -1) {
               newValues.push(item.value)
             } else {
               newValues.splice(index, 1)
             }
             this.setState({
               moreValues: newValues
-            }, () => {
-              console.log('moreValues的值：', this.state.moreValues)
             })
           }}
         >{item.label}</span>
