@@ -8,8 +8,24 @@ import './index.scss'
 
 // 导入公共函数获取定位城市
 import { getCurrentCity } from '../../utils/index'
-
+// 导入axios实例对象
 import request from '../../utils/request'
+// 导入react-virtualized的List组件
+import {List} from 'react-virtualized';
+
+function rowRenderer({
+  key, // Unique key within array of rows
+  index, // Index of row within collection
+  isScrolling, // The List is currently being scrolled
+  isVisible, // This row is visible within the List (eg it is not an overscanned row)
+  style, // Style object to be applied to row (to position it)
+}) {
+  return (
+    <div key={key} style={style}>
+      <h1>房屋列表</h1>
+    </div>
+  );
+}
 
 export default class Houselist extends Component {
   state = {
@@ -64,9 +80,17 @@ export default class Houselist extends Component {
             <SearchHeader cityname={this.state.cityName}></SearchHeader>
           </div>
           
-
           {/* Filter 筛选条件组件 */}
           <Filter onFilter={this.onFilter}></Filter>
+
+          {/* 房屋列表展示 */}
+          <List
+            width={300}
+            height={300}
+            rowCount={this.state.count} // 注意：第一次打开页面没有选中的条件，所以没有数据
+            rowHeight={120}
+            rowRenderer={rowRenderer}
+          />
       </div>
     )
   }

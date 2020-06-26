@@ -108,7 +108,7 @@ export default class FilterPicker extends Component {
           value={this.state.value}
           cols={cols}
           onChange={(val) => {
-            console.log('选中的值：', val)
+            // console.log('选中的值：', val)
             this.setState({
               value: val
             })
