@@ -89,7 +89,7 @@ const province = [
 
 export default class FilterPicker extends Component {
   state = {
-    value: null // 存放选择框选中的值
+    value: this.props.defaultValues // 存放选择框选中的值
   }
   render() {
     console.log('FilterPicker:', this.props)
@@ -99,7 +99,7 @@ export default class FilterPicker extends Component {
         {/* 选择器组件： */}
         <PickerView
           data={data}
-          value={null}
+          value={this.state.value}
           cols={cols}
           onChange={(val) => {
             console.log('选中的值：', val)

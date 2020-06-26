@@ -50,6 +50,8 @@ export default class Filter extends Component {
       let { filtersData } = this.state
       let data = [] // 下拉条件数据
       let cols = 0 // 列数
+      // 拿到选中的默认值
+      let defaultValues = this.state.selectedValues[openType]
       switch (openType) {
         case 'area':
           data = [filtersData.area, filtersData.subway]
@@ -72,6 +74,7 @@ export default class Filter extends Component {
           cols={cols}
           onCancel={this.onCancel}
           onSave={this.onSave}
+          defaultValues={defaultValues}
         />
       )
     } else if (openType === 'more') {
