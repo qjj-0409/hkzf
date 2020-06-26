@@ -12,10 +12,12 @@ export default class FilterMore extends Component {
   renderFilters(arr) {
     // 高亮类名： styles.tagActive
     return arr.map((item, index) => {
+      // 选中的元素
+      let isSelected = this.state.moreValues.indexOf(item.value) !== -1
       return (
         <span
           key={item.value}
-          className={[styles.tag, ].join(' ')}
+          className={[styles.tag, isSelected ? styles.tagActive : '' ].join(' ')}
           onClick={() => {
             let newValues = this.state.moreValues
             // 点击的时候先判断是否已被选中
@@ -64,8 +66,15 @@ export default class FilterMore extends Component {
         {/* 底部按钮 */}
         <FilterFooter
           className={styles.footer}
+          cancelText="清除"
           onSave={() => {
             this.props.onSave(this.state.moreValues)
+          }}
+          onCancel={() => {
+            // 去掉所有之前选中的-->重置选中数组为空
+            this.setState({
+              moreValues: []
+            })
           }}
         />
       </div>
