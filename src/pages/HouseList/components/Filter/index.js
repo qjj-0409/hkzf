@@ -23,7 +23,13 @@ export default class Filter extends Component {
   state = {
     titleStatus: titleStatus, // 四个标题的高亮状态
     openType: '', // 被打开的标题type
-    filtersData: {} // 房屋查询条件
+    filtersData: {}, // 房屋查询条件
+    selectedValues: { // 选中的条件
+      area: ['area', 'null'],
+      mode: ['null'],
+      price: ['null'],
+      more: []
+    }
   }
   // 封装函数-点击修改标题高亮状态
   onTitleClick = (type) => {
@@ -97,9 +103,17 @@ export default class Filter extends Component {
     })
   }
   // 声明函数-下拉选择框确认按钮事件
-  onSave = () => {
+  onSave = (value) => {
+    let type = this.state.openType
     this.setState({
+      // 接收传来的条件
+      selectedValues: {
+        ...this.state.selectedValues,
+        [type]: value
+      },
       openType: ''
+    }, () => {
+      console.log('接收传来的条件：', this.state.selectedValues)
     })
   }
 
