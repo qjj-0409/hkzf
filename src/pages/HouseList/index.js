@@ -11,7 +11,7 @@ import { getCurrentCity } from '../../utils/index'
 // 导入axios实例对象
 import request from '../../utils/request'
 // 导入react-virtualized的List组件
-import {List, AutoSizer, WindowScroller } from 'react-virtualized'
+import {List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized'
 import styles from './houselist.module.scss'
 
 export default class Houselist extends Component {
@@ -32,19 +32,21 @@ export default class Houselist extends Component {
   }
 
   // 封装函数-发请求获取房屋列表
-  searchHouseList = async () => {
+  searchHouseList = async (startIndex = 1, stopIndex = 20) => {
+    console.log('startIndex和stopIndex', startIndex, stopIndex)
     const { data } = await request.get('/houses', {
       params: {
         cityId: this.state.cityId, // 城市id
         ...this.filters, // 选择项
-        start: 1, // 开始项
-        end: 20 // 结束项
+        start: startIndex, // 开始项
+        end: stopIndex // 结束项
       }
     })
-    console.log('房屋列表信息：', data)
+    let newList = [...this.state.list, ...data.body.list]
+    console.log('房屋列表信息：', newList)
     this.setState({
       count: data.body.count,
-      list: data.body.list
+      list: newList
     })
   }
 
@@ -114,6 +116,21 @@ export default class Houselist extends Component {
     )
   }
 
+  // 封装函数-当前数据是否加载完成
+  isRowLoaded = ({ index }) => {
+    return !!this.state.list[index];
+  }
+
+  // 封装函数-加载更多
+  loadMoreRows = ({ startIndex, stopIndex }) => {
+    return new Promise((resolve, reject) => {
+      // 发送请求，获取更多数据
+      this.searchHouseList(startIndex, stopIndex)
+      // 获取数据成功后，resolve
+      resolve()
+    })
+  }
+
   // 生命周期函数-初次加载页面
   async componentDidMount() {
     // 获取定位城市
@@ -144,32 +161,43 @@ export default class Houselist extends Component {
         {/* Filter 筛选条件组件 */}
         <Filter onFilter={this.onFilter}></Filter>
 
-        {/* 房屋列表展示 */}
-        {/* 让整个页面一起滚动 */}
-        <WindowScroller>
-          {({ height, isScrolling, onChildScroll, scrollTop }) => (
-            // 将屏幕剩余宽高设置给List组件
-            <AutoSizer>
-            {({ width }) => (
-              <List
-                // WindowScroller要求
-                autoHeight // 自动适应窗口高度
-                isScrolling={isScrolling} // 判断当前包裹的组件是否滚动
-                onScroll={onChildScroll} // 监听页面滚动让List一起滚
-                scrollTop={scrollTop} // 控制让list滚多少
+        {/* 房屋列表展示 */}       
+        {/* 无限滚动加载更多 */}
+        <InfiniteLoader
+          isRowLoaded={this.isRowLoaded} // 当前数据是否加载完成
+          loadMoreRows={this.loadMoreRows} // 加载更多
+          rowCount={this.state.count} // 总行数
+        >
+          {({ onRowsRendered, registerChild }) => (
+            // 让整个页面一起滚动
+            <WindowScroller>
+              {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                // 将屏幕剩余宽高设置给List组件
+                <AutoSizer>
+                {({ width }) => (
+                  <List
+                    // InfiniteLoader要求
+                    onRowsRendered={onRowsRendered}
+                    ref={registerChild}
 
-                width={width}
-                height={height}
-                rowCount={this.state.count} // 注意：第一次打开页面没有选中的条件，所以没有数据
-                rowHeight={120}
-                rowRenderer={this.rowRenderer}
-              />
-            )}
-          </AutoSizer>
+                    // WindowScroller要求
+                    autoHeight // 自动适应窗口高度
+                    isScrolling={isScrolling} // 判断当前包裹的组件是否滚动
+                    onScroll={onChildScroll} // 监听页面滚动让List一起滚
+                    scrollTop={scrollTop} // 控制让list滚多少
+    
+                    width={width}
+                    height={height}
+                    rowCount={this.state.count} // 注意：第一次打开页面没有选中的条件，所以没有数据
+                    rowHeight={120}
+                    rowRenderer={this.rowRenderer}
+                  />
+                )}
+              </AutoSizer>
+              )}
+            </WindowScroller>
           )}
-        </WindowScroller>
-        
-
+        </InfiniteLoader>
         
       </div>
     )
