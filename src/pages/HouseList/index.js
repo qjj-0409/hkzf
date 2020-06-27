@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Toast } from 'antd-mobile'
 // 导入搜索导航栏组件
 import SearchHeader from '../../components/SearchHeader'
 // 导入Filter 筛选条件组件
@@ -16,6 +15,9 @@ import {List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualize
 import styles from './houselist.module.scss'
 // 导入自定义的吸顶组件
 import Sticky from '../../components/Sticky/index'
+import { Toast } from 'antd-mobile'
+// 导入react-spring动画
+import {Spring} from 'react-spring/renderprops'
 
 
 export default class Houselist extends Component {
@@ -163,16 +165,26 @@ export default class Houselist extends Component {
   render() {
     return (
       <div className="houselist">
-        {/* 搜索导航栏组件 */}
-        <div className="header">
-          <i
-            className="iconfont icon-back"
-            onClick={() => {
-              this.props.history.goBack()
-            }}
-          ></i>
-          <SearchHeader cityname={this.state.cityName}></SearchHeader>
-        </div>
+        <Spring
+          from={{ opacity: 0, backgroundColor: 'pink' }}
+          to={{ opacity: 1, backgroundColor: 'skyblue' }}
+          config={{duration: 3000}}
+        >
+          {props => (
+            //  搜索导航栏组件
+            <div style={props} className="header">
+              <i
+                className="iconfont icon-back"
+                onClick={() => {
+                  this.props.history.goBack()
+                }}
+              ></i>
+              <SearchHeader cityname={this.state.cityName}></SearchHeader>
+            </div>
+          )}
+        </Spring>
+
+        
         
         {/* Filter 筛选条件组件 */}
         <Sticky height={40}>
