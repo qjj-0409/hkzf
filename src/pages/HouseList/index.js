@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Toast } from 'antd-mobile'
 // 导入搜索导航栏组件
 import SearchHeader from '../../components/SearchHeader'
 // 导入Filter 筛选条件组件
@@ -16,6 +17,7 @@ import styles from './houselist.module.scss'
 // 导入自定义的吸顶组件
 import Sticky from '../../components/Sticky/index'
 
+
 export default class Houselist extends Component {
   state = {
     cityName: '', // 定位城市名
@@ -30,12 +32,18 @@ export default class Houselist extends Component {
     // 两个函数用到同一个参数，传参方式：1.传参数 2.全局变量 3.this.变量 = 变量
     this.filters = filters
     // 调用函数发请求
+    this.setState({
+      list: []
+    })
     this.searchHouseList()
   }
 
   // 封装函数-发请求获取房屋列表
-  searchHouseList = async (startIndex = 1, stopIndex = 20) => {
-    console.log('startIndex和stopIndex', startIndex, stopIndex)
+  searchHouseList = async (startIndex = 1, stopIndex = 20, info = true) => {
+    // 发请求前显示loading加载中
+    Toast.loading('加载中', 0)
+    console.log('请求中的filters', this.filters)
+    // console.log('startIndex和stopIndex', startIndex, stopIndex)
     const { data } = await request.get('/houses', {
       params: {
         cityId: this.state.cityId, // 城市id
@@ -50,6 +58,12 @@ export default class Houselist extends Component {
       count: data.body.count,
       list: newList
     })
+    // 请求成功后，关闭loading
+    Toast.hide()
+    if (info) {
+      // 显示总数量
+      Toast.info(`共有${data.body.count}条数据`, 3)
+    }
   }
 
   // 封装函数-格式化tag样式
@@ -125,9 +139,9 @@ export default class Houselist extends Component {
 
   // 封装函数-加载更多
   loadMoreRows = ({ startIndex, stopIndex }) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       // 发送请求，获取更多数据
-      this.searchHouseList(startIndex, stopIndex)
+      this.searchHouseList(startIndex, stopIndex, false)
       // 获取数据成功后，resolve
       resolve()
     })
