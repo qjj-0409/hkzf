@@ -13,6 +13,8 @@ import request from '../../utils/request'
 // 导入react-virtualized的List组件
 import {List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized'
 import styles from './houselist.module.scss'
+// 导入自定义的吸顶组件
+import Sticky from '../../components/Sticky/index'
 
 export default class Houselist extends Component {
   state = {
@@ -159,7 +161,9 @@ export default class Houselist extends Component {
         </div>
         
         {/* Filter 筛选条件组件 */}
-        <Filter onFilter={this.onFilter}></Filter>
+        <Sticky height={40}>
+          <Filter onFilter={this.onFilter}></Filter>
+        </Sticky>
 
         {/* 房屋列表展示 */}       
         {/* 无限滚动加载更多 */}
