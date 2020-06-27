@@ -11,21 +11,8 @@ import { getCurrentCity } from '../../utils/index'
 // 导入axios实例对象
 import request from '../../utils/request'
 // 导入react-virtualized的List组件
-import {List} from 'react-virtualized';
-
-function rowRenderer({
-  key, // Unique key within array of rows
-  index, // Index of row within collection
-  isScrolling, // The List is currently being scrolled
-  isVisible, // This row is visible within the List (eg it is not an overscanned row)
-  style, // Style object to be applied to row (to position it)
-}) {
-  return (
-    <div key={key} style={style}>
-      <h1>房屋列表</h1>
-    </div>
-  );
-}
+import {List, AutoSizer } from 'react-virtualized'
+import styles from './houselist.module.scss'
 
 export default class Houselist extends Component {
   state = {
@@ -61,6 +48,72 @@ export default class Houselist extends Component {
     })
   }
 
+  // 封装函数-格式化tag样式
+  formatTag = (i) => {
+    switch (i) {
+      case 0:
+        return styles.tag1
+      case 1:
+        return styles.tag2
+      case 2:
+        return styles.tag3
+      default:
+        break;
+    }
+  }
+
+  // 封装函数-渲染每行数据
+  rowRenderer = ({
+    key, // Unique key within array of rows
+    index, // Index of row within collection
+    isScrolling, // The List is currently being scrolled
+    isVisible, // This row is visible within the List (eg it is not an overscanned row)
+    style, // Style object to be applied to row (to position it)
+  }) => {
+    const house = this.state.list[index]
+    if (!house) {
+      return <div
+        key={key}
+        style={style}
+        className={styles.loading}
+      >加载中...</div>
+    }
+    return (
+      <div
+        className={styles.house}
+        key={key}
+        style={style}
+      >
+        <div className={styles.imgWrap}>
+          <img
+            className={styles.img}
+            src={`http://api-haoke-web.itheima.net${house.houseImg}`}
+            alt=""
+          />
+        </div>
+        <div className={styles.content}>
+          <h3 className={styles.title}>{house.title}</h3>
+          <div className={styles.desc}>{house.desc}</div>
+          <div>
+            {
+              house.tags.map((tag, i) => {
+                return (
+                  <span
+                    className={[styles.tag, this.formatTag(i)].join(' ')}
+                    key={i}
+                >{tag}</span>
+                )
+              })
+            }
+          </div>
+          <div className={styles.price}>
+            <span className={styles.priceNum}>{house.price}</span>元/月
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   // 生命周期函数-初次加载页面
   async componentDidMount() {
     // 获取定位城市
@@ -70,27 +123,39 @@ export default class Houselist extends Component {
       cityName: dingwei.label,
       cityId: dingwei.value
     })
+    // 页面一打开发送请求获取房源列表
+    this.filters = {} // 没有条件，加载所有
+    this.searchHouseList()
   }
   render() {
     return (
       <div className="houselist">
-          {/* 搜索导航栏组件 */}
-          <div className="header">
-            <i className="iconfont icon-back"></i>
-            <SearchHeader cityname={this.state.cityName}></SearchHeader>
-          </div>
-          
-          {/* Filter 筛选条件组件 */}
-          <Filter onFilter={this.onFilter}></Filter>
+        {/* 搜索导航栏组件 */}
+        <div className="header">
+          <i
+            className="iconfont icon-back"
+            onClick={() => {
+              this.props.history.goBack()
+            }}
+          ></i>
+          <SearchHeader cityname={this.state.cityName}></SearchHeader>
+        </div>
+        
+        {/* Filter 筛选条件组件 */}
+        <Filter onFilter={this.onFilter}></Filter>
 
-          {/* 房屋列表展示 */}
-          <List
-            width={300}
-            height={300}
-            rowCount={this.state.count} // 注意：第一次打开页面没有选中的条件，所以没有数据
-            rowHeight={120}
-            rowRenderer={rowRenderer}
-          />
+        {/* 房屋列表展示 */}
+        <AutoSizer>
+          {({height, width}) => (
+            <List
+              width={width}
+              height={height}
+              rowCount={this.state.count} // 注意：第一次打开页面没有选中的条件，所以没有数据
+              rowHeight={120}
+              rowRenderer={this.rowRenderer}
+            />
+          )}
+        </AutoSizer>
       </div>
     )
   }
