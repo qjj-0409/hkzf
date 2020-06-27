@@ -11,7 +11,7 @@ import { getCurrentCity } from '../../utils/index'
 // 导入axios实例对象
 import request from '../../utils/request'
 // 导入react-virtualized的List组件
-import {List, AutoSizer } from 'react-virtualized'
+import {List, AutoSizer, WindowScroller } from 'react-virtualized'
 import styles from './houselist.module.scss'
 
 export default class Houselist extends Component {
@@ -145,17 +145,32 @@ export default class Houselist extends Component {
         <Filter onFilter={this.onFilter}></Filter>
 
         {/* 房屋列表展示 */}
-        <AutoSizer>
-          {({height, width}) => (
-            <List
-              width={width}
-              height={height}
-              rowCount={this.state.count} // 注意：第一次打开页面没有选中的条件，所以没有数据
-              rowHeight={120}
-              rowRenderer={this.rowRenderer}
-            />
+        {/* 让整个页面一起滚动 */}
+        <WindowScroller>
+          {({ height, isScrolling, onChildScroll, scrollTop }) => (
+            // 将屏幕剩余宽高设置给List组件
+            <AutoSizer>
+            {({ width }) => (
+              <List
+                // WindowScroller要求
+                autoHeight // 自动适应窗口高度
+                isScrolling={isScrolling} // 判断当前包裹的组件是否滚动
+                onScroll={onChildScroll} // 监听页面滚动让List一起滚
+                scrollTop={scrollTop} // 控制让list滚多少
+
+                width={width}
+                height={height}
+                rowCount={this.state.count} // 注意：第一次打开页面没有选中的条件，所以没有数据
+                rowHeight={120}
+                rowRenderer={this.rowRenderer}
+              />
+            )}
+          </AutoSizer>
           )}
-        </AutoSizer>
+        </WindowScroller>
+        
+
+        
       </div>
     )
   }
