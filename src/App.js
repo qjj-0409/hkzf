@@ -14,7 +14,8 @@ import { BrowserRouter, Route, Redirect} from 'react-router-dom'
 import Home from './pages/Home'
 import CityList from './pages/CityList/'
 import Map from './pages/Map/'
-import HouseDetail from './pages/HouseDetail'
+import HouseDetail from './pages/HouseDetail/'
+import Login from './pages/Login/'
 
 export default class App extends Component {
     render() {
@@ -36,6 +37,7 @@ export default class App extends Component {
                 <Route exact path="/citylist" component={CityList}></Route>
                 <Route exact path="/map" component={Map}></Route>
                 <Route exact path="/detail/:id" component={HouseDetail}></Route>
+                <Route exact path="/login" component={Login}></Route>
             </div>
             </BrowserRouter>
         )

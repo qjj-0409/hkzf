@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import SearchHeader from '../../components/SearchHeader'
 // 导入Filter 筛选条件组件
 import Filter from './components/Filter'
+import { Toast } from 'antd-mobile'
 // 导入样式
 import './index.scss'
 
@@ -15,7 +16,6 @@ import {List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualize
 import styles from './houselist.module.scss'
 // 导入自定义的吸顶组件
 import Sticky from '../../components/Sticky/index'
-import { Toast } from 'antd-mobile'
 // 导入react-spring动画
 import {Spring} from 'react-spring/renderprops'
 
