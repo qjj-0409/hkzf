@@ -22,17 +22,15 @@ import PropTypes from 'prop-types'
 class NavHeader extends Component {
   render() {
     return (
-      <div>
-        <NavBar
-          className="navbar"
-          mode="light" // 模式 light dark
-          icon={<Icon type="left" />} // 出现在最左边的图标占位符
-          onLeftClick={() => {
-            // 返回上一页
-            this.props.history.go(-1)
-          }} // 导航左边点击回调
-        >{this.props.children}</NavBar>
-      </div>
+      <NavBar
+        className="navbar"
+        mode="light" // 模式 light dark
+        icon={<Icon type="left" />} // 出现在最左边的图标占位符
+        onLeftClick={() => {
+          // 返回上一页
+          this.props.history.go(-1)
+        }} // 导航左边点击回调
+      >{this.props.children}</NavBar>
     )
   }
 }

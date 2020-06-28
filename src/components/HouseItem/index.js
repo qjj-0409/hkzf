@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 
 import styles from './index.module.css'
 
-function HouseItem({ src, title, desc, tags, price, onClick, style }) {
+function HouseItem({ houseImg, title, desc, tags, price, onClick, style }) {
   return (
     <div className={styles.house} onClick={onClick} style={style}>
       <div className={styles.imgWrap}>
-        <img className={styles.img} src={src} alt="" />
+        <img className={styles.img} src={'http://api-haoke-web.itheima.net'+houseImg} alt="" />
       </div>
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
@@ -36,7 +36,7 @@ function HouseItem({ src, title, desc, tags, price, onClick, style }) {
 }
 
 HouseItem.propTypes = {
-  src: PropTypes.string,
+  houseImg: PropTypes.string,
   title: PropTypes.string,
   desc: PropTypes.string,
   tags: PropTypes.array.isRequired,

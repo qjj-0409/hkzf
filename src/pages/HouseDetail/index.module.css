@@ -21,6 +21,10 @@
   height: 252px;
 }
 
+.slides img {
+  padding-top: 45px;
+}
+
 .navHeader {
   position: absolute;
   z-index: 2;
