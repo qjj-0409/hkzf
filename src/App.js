@@ -14,6 +14,7 @@ import { BrowserRouter, Route, Redirect} from 'react-router-dom'
 import Home from './pages/Home'
 import CityList from './pages/CityList/'
 import Map from './pages/Map/'
+import HouseDetail from './pages/HouseDetail'
 
 export default class App extends Component {
     render() {
@@ -22,7 +23,7 @@ export default class App extends Component {
             <div className="app">
                 {/* <Button type="primary">按钮</Button> */}
                 {/* 默认地址重定向 */}
-                <Route path="/" render={
+                <Route exact path="/" render={
                   (props) => {
                     return <Redirect to="/home/index"></Redirect>
                   }
@@ -34,6 +35,7 @@ export default class App extends Component {
                 {/* 城市列表组件 */}
                 <Route exact path="/citylist" component={CityList}></Route>
                 <Route exact path="/map" component={Map}></Route>
+                <Route exact path="/detail/:id" component={HouseDetail}></Route>
             </div>
             </BrowserRouter>
         )

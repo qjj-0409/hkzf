@@ -103,6 +103,11 @@ export default class Houselist extends Component {
         className={styles.house}
         key={key}
         style={style}
+        onClick={
+          () => {
+            this.props.history.push(`/detail/${this.state.list[index].houseCode}`)
+          }
+        }
       >
         <div className={styles.imgWrap}>
           <img
@@ -166,9 +171,9 @@ export default class Houselist extends Component {
     return (
       <div className="houselist">
         <Spring
-          from={{ opacity: 0, backgroundColor: 'pink' }}
-          to={{ opacity: 1, backgroundColor: 'skyblue' }}
-          config={{duration: 3000}}
+          from={{ opacity: 0, backgroundColor: 'pink' }} // 开始样式对象
+          to={{ opacity: 1, backgroundColor: 'skyblue' }} // 结束样式对象
+          config={{duration: 3000}} // 配置对象，duration动画执行时间
         >
           {props => (
             //  搜索导航栏组件
