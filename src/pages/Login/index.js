@@ -9,15 +9,16 @@ import styles from './index.module.css'
 
 import request from '../../utils/request'
 
+// 导入formik
+import { withFormik } from 'formik'
+// 导入yup，配合validationSchema进行表单验证
+import * as Yup from 'yup'
+
 // 验证规则：
 // const REG_UNAME = /^[a-zA-Z_\d]{5,8}$/
 // const REG_PWD = /^[a-zA-Z_\d]{5,12}$/
 
 class Login extends Component {
-  state = {
-    username: '',
-    password: ''
-  }
 
   // 封装函数-获取用户名
   getUsername = (e) => {
@@ -35,30 +36,17 @@ class Login extends Component {
     })
   }
 
-  // 封装函数-提交表单
-  handleSubmit = async (e) => {
-    // 阻止默认行为
-    e.preventDefault()
-    // 获取用户名和密码，发送请求去登录
-    const { data } = await request.post('/user/login', {
-      username: this.state.username,
-      password: this.state.password
-    })
-    console.log('登录信息', data)
-    if (data.status === 200) {
-      // 登录成功
-      // 保存token到本地存储
-      localStorage.setItem('my-token', data.body.token)
-      // 提示登录成功
-      Toast.success(data.description, 2)
-    } else {
-      // 提示登录失败
-      Toast.fail(data.description, 2)
-    }
-  }
+  
 
   // 生命周期函数-渲染到内存
   render() {
+    let {
+      values,
+      errors,
+      handleChange,
+      handleSubmit,
+    } = this.props
+    console.log('login页的props', this.props)
     return (
       <div className={styles.root}>
         {/* 顶部导航 */}
@@ -67,22 +55,23 @@ class Login extends Component {
 
         {/* 登录表单 */}
         <WingBlank>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className={styles.formItem}>
               <input
-                value={this.state.username}
-                onChange={this.getUsername}
+                value={values.username}
+                onChange={handleChange}
                 className={styles.input}
                 name="username"
                 placeholder="请输入账号"
               />
             </div>
             {/* 长度为5到8位，只能出现数字、字母、下划线 */}
+            { errors.username ? <div className={styles.error}>{errors.username}</div> : null }
             {/* <div className={styles.error}>账号为必填项</div> */}
             <div className={styles.formItem}>
               <input
-                value={this.state.password}
-                onChange={this.getPassword}
+                value={values.password}
+                onChange={handleChange}
                 className={styles.input}
                 name="password"
                 type="password"
@@ -90,6 +79,7 @@ class Login extends Component {
               />
             </div>
             {/* 长度为5到12位，只能出现数字、字母、下划线 */}
+            { errors.password ? <div className={styles.error}>{errors.password}</div> : null }
             {/* <div className={styles.error}>账号为必填项</div> */}
             <div className={styles.formSubmit}>
               <button className={styles.submit} type="submit">
@@ -108,4 +98,41 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default withFormik({
+  // 1.mapPropsToValues的作用：替代state；会把数据写在组件上
+  mapPropsToValues: () => {
+    return {
+      username: '', // 用户名
+      password: '' // 密码
+    }
+  },
+  // 2.handleSubmit表单提交的函数，替代原来的onSubmit事件的执行函数
+  handleSubmit: async (values, { props }) => {
+    // 阻止默认行为，内部默认已经做了
+    // e.preventDefault()
+    // 获取用户名和密码，发送请求去登录
+    const { data } = await request.post('/user/login', {
+      username: values.username,
+      password: values.password
+    })
+    console.log('登录信息', data)
+    if (data.status === 200) {
+      // 登录成功
+      // 保存token到本地存储
+      localStorage.setItem('my-token', data.body.token)
+      // 提示登录成功
+      Toast.success(data.description, 2)
+    } else {
+      // 提示登录失败
+      Toast.fail(data.description, 2)
+    }
+  },
+  // 3.validationSchema配合yup进行表单验证
+  validationSchema: Yup.object().shape({
+    // values参数: 验证规则
+    // 报错信息会放在props对象的errors对象上
+    // 如果没有错误，则errors是一个空对象
+    username: Yup.string().required('用户名必填').matches(/^\w{5,8}$/, '用户名长度为5到8位，只能出现数字、字母、下划线'),
+    password: Yup.string().required('密码必填').matches(/^\w{5,12}$/, '密码长度为5到12位，只能出现数字、字母、下划线')
+  })
+})(Login)
