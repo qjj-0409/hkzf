@@ -37,17 +37,15 @@ class Login extends Component {
     })
   }
 
-  
-
   // 生命周期函数-渲染到内存
   render() {
-    let {
-      values,
-      errors,
-      handleChange,
-      handleSubmit,
-    } = this.props
-    console.log('login页的props', this.props)
+    // let {
+    //   values,
+    //   errors,
+    //   handleChange,
+    //   handleSubmit,
+    // } = this.props
+    // console.log('login页的props', this.props)
     return (
       <div className={styles.root}>
         {/* 顶部导航 */}

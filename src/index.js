@@ -1,10 +1,10 @@
 // 1.引入react, react-dom
 import React from 'react'
 import ReactDOM from 'react-dom'
-// 导入全局样式
-import './index.css'
 // 导入antd-mobile样式文件
 import 'antd-mobile/dist/antd-mobile.css'
+// 导入全局样式
+import './index.css'
 // 引入字体图标
 import './assets/fonts/iconfont.css'
 

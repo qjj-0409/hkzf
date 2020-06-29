@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Carousel, Flex } from 'antd-mobile'
+import { Carousel, Flex, Toast } from 'antd-mobile'
 
 import NavHeader from '../../components/NavHeader'
 import HouseItem from '../../components/HouseItem'
@@ -99,9 +99,13 @@ export default class HouseDetail extends Component {
 
   // 封装函数-获取房子详情
   getHouseInfo = async () => {
+    // 发送请求之前显示loading
+    Toast.loading('加载中', 0)
     const id = this.props.match.params.id
     const { data } = await request.get('/houses/' + id)
-    console.log('商品详情：',data)
+    // 请求成功关闭loading
+    Toast.hide()
+    // console.log('商品详情：',data)
     this.renderMap(data.body.community, {
       latitude: data.body.coord.latitude,
       longitude: data.body.coord.longitude
