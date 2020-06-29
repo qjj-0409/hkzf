@@ -10,7 +10,8 @@ import styles from './index.module.css'
 import request from '../../utils/request'
 
 // 导入formik
-import { withFormik } from 'formik'
+// 简化表单验证
+import { withFormik, Form, Field, ErrorMessage } from 'formik'
 // 导入yup，配合validationSchema进行表单验证
 import * as Yup from 'yup'
 
@@ -55,23 +56,22 @@ class Login extends Component {
 
         {/* 登录表单 */}
         <WingBlank>
-          <form onSubmit={handleSubmit}>
+          {/* 1.Form替换from，不用绑定onSubmit事件，内部默认绑定 */}
+          <Form>
             <div className={styles.formItem}>
-              <input
-                value={values.username}
-                onChange={handleChange}
+              {/* 2.Field替换input输入框，value和onChange事件不用写了，使用name绑定values */}
+              <Field
                 className={styles.input}
                 name="username"
                 placeholder="请输入账号"
               />
             </div>
             {/* 长度为5到8位，只能出现数字、字母、下划线 */}
-            { errors.username ? <div className={styles.error}>{errors.username}</div> : null }
+            {/* 3.ErrorMessage替换错误提示框，使用name绑定对应验证errors的错误，component绑定错误标签div */}
+            <ErrorMessage className={styles.error} name="username" component="div" />
             {/* <div className={styles.error}>账号为必填项</div> */}
             <div className={styles.formItem}>
-              <input
-                value={values.password}
-                onChange={handleChange}
+              <Field
                 className={styles.input}
                 name="password"
                 type="password"
@@ -79,14 +79,14 @@ class Login extends Component {
               />
             </div>
             {/* 长度为5到12位，只能出现数字、字母、下划线 */}
-            { errors.password ? <div className={styles.error}>{errors.password}</div> : null }
+            <ErrorMessage className={styles.error} name="password" component="div" />
             {/* <div className={styles.error}>账号为必填项</div> */}
             <div className={styles.formSubmit}>
               <button className={styles.submit} type="submit">
                 登 录
               </button>
             </div>
-          </form>
+          </Form>
           <Flex className={styles.backHome}>
             <Flex.Item>
               <Link to="/registe">还没有账号，去注册~</Link>
