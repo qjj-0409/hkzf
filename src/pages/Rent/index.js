@@ -21,6 +21,7 @@ export default class Rent extends Component {
     const res = await request.get('/user/houses')
 
     const { status, body } = res.data
+    console.log('已发布的房源信息', res.data)
     if (status === 200) {
       this.setState({
         list: body

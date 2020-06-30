@@ -13,7 +13,7 @@ export default class AuthRoute extends Component {
         render={(props) => {
           if (isAuth()) {
             // 登录了，显示房屋管理页面
-            return <Page></Page>
+            return <Page {...props}></Page>
           } else {
             // 未登录，则重定向到登录页面
             return <Redirect to="/login"></Redirect>
