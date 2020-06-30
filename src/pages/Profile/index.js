@@ -7,6 +7,9 @@ import baseURL from '../../utils/baseURL'
 
 import styles from './index.module.css'
 
+import { isAuth, getToken } from '../../utils/token'
+import request from '../../utils/request'
+
 // 菜单数据
 const menus = [
   { id: 1, name: '我的收藏', iconfont: 'icon-coll', to: '/favorate' },
@@ -27,7 +30,11 @@ const DEFAULT_AVATAR = baseURL + '/img/profile/avatar.png'
 export default class Profile extends Component {
   // 生命周期函数-初始化（进打开页面执行一次）
   state = {
-    isLogin: false // 控制登录状态
+    isLogin: isAuth(), // 控制登录状态
+    userInfo: { // 用户相关信息
+      avatar: '', // 用户头像
+      nickname: '' // 用户昵称
+    }
   }
 
   // 封装函数-渲染登录状态
@@ -65,15 +72,35 @@ export default class Profile extends Component {
     }
   }
 
+  // 封装函数-获取用户信息
+  getUserInfo = async () => {
+    const { data } = await request.get('/user', {
+      headers: {
+        authorization: getToken()
+      }
+    })
+    console.log('获取到的用户信息：', data)
+    if (data.status === 200) {
+      // 请求成功，渲染用户个人信息
+      this.setState({
+        userInfo: {
+          avatar: data.body.avatar,
+          nickname: data.body.nickname
+        }
+      })
+    }
+  }
+
   // 生命周期函数-初次渲染到页面（执行一次）
   componentDidMount () {
     // 调用函数-获取用户信息
-    // this.getUserInfo()
+    this.getUserInfo()
   }
 
   // 生命周期函数-渲染到内存（执行多次）
   render() {
     // const { history } = this.props
+    let { userInfo } = this.state
 
     return (
       <div className={styles.root}>
@@ -86,10 +113,10 @@ export default class Profile extends Component {
           />
           <div className={styles.info}>
             <div className={styles.myIcon}>
-              <img className={styles.avatar} src={DEFAULT_AVATAR} alt="icon" />
+              <img className={styles.avatar} src={ userInfo.avatar || DEFAULT_AVATAR} alt="icon" />
             </div>
             <div className={styles.user}>
-              <div className={styles.name}>游客</div>
+              <div className={styles.name}>{ userInfo.nickname || '游客' }</div>
               {/* 调用函数-渲染登录状态 */}
               { this.renderLogin() }
             </div>
