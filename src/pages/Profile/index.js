@@ -7,7 +7,7 @@ import baseURL from '../../utils/baseURL'
 
 import styles from './index.module.css'
 
-import { isAuth, getToken, removeToken } from '../../utils/token'
+import { isAuth, removeToken } from '../../utils/token'
 import request from '../../utils/request'
 
 // 菜单数据
@@ -74,11 +74,7 @@ export default class Profile extends Component {
 
   // 封装函数-获取用户信息
   getUserInfo = async () => {
-    const { data } = await request.get('/user', {
-      headers: {
-        authorization: getToken()
-      }
-    })
+    const { data } = await request.get('/user')
     // console.log('获取到的用户信息：', data)
     if (data.status === 200) {
       // 请求成功，渲染用户个人信息
@@ -100,14 +96,9 @@ export default class Profile extends Component {
         console.log('取消')
       }},
       { text: '确定', onPress: async () => {
-        console.log('确定退出')
         // 3.点击确定发请求退出
-        const { data } = await request.post('/user/logout', null, {
-          headers: {
-            authorization: getToken()
-          }
-        })
-        console.log('退出信息：', data)
+        const { data } = await request.post('/user/logout', null)
+        // console.log('退出信息：', data)
         // 4.退出成功，清除token，重置state数据
         if (data.status === 200) {
           removeToken()
@@ -121,7 +112,6 @@ export default class Profile extends Component {
         }
       }}
     ])
-    
   }
 
   // 生命周期函数-初次渲染到页面（执行一次）

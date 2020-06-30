@@ -16,6 +16,10 @@ import CityList from './pages/CityList/'
 import Map from './pages/Map/'
 import HouseDetail from './pages/HouseDetail/'
 import Login from './pages/Login/'
+import Rent from './pages/Rent/'
+import AuthRoute from './components/AuthRoute'
+import RentAdd from './pages/Rent/Add/'
+import RentSearch from './pages/Rent/Search/'
 
 export default class App extends Component {
     render() {
@@ -38,6 +42,10 @@ export default class App extends Component {
                 <Route exact path="/map" component={Map}></Route>
                 <Route exact path="/detail/:id" component={HouseDetail}></Route>
                 <Route exact path="/login" component={Login}></Route>
+                {/* 房屋管理组件 */}
+                <AuthRoute exact={true} path="/rent" Page={Rent}></AuthRoute>
+                <AuthRoute exact={true} path="/rent/add" Page={RentAdd}></AuthRoute>
+                <AuthRoute exact={true} path="/rent/search" Page={RentSearch}></AuthRoute>
             </div>
             </BrowserRouter>
         )
