@@ -25,8 +25,55 @@ const menus = [
 const DEFAULT_AVATAR = baseURL + '/img/profile/avatar.png'
 
 export default class Profile extends Component {
-  render() {
+  // 生命周期函数-初始化（进打开页面执行一次）
+  state = {
+    isLogin: false // 控制登录状态
+  }
+
+  // 封装函数-渲染登录状态
+  renderLogin = () => {
     const { history } = this.props
+    if (this.state.isLogin) {
+      // 已登录样式
+      return (
+        <>
+          <div className={styles.auth}>
+            <span onClick={this.logout}>退出</span>
+          </div>
+          <div className={styles.edit}>
+            编辑个人资料
+            <span className={styles.arrow}>
+              <i className="iconfont icon-arrow" />
+            </span>
+          </div>
+        </>
+      )
+    } else {
+      // 未登录样式
+      return (
+        <div className={styles.edit}>
+          <Button
+            type="primary"
+            size="small"
+            inline
+            onClick={() => history.push('/login')}
+          >
+            去登录
+          </Button>
+        </div>
+      )
+    }
+  }
+
+  // 生命周期函数-初次渲染到页面（执行一次）
+  componentDidMount () {
+    // 调用函数-获取用户信息
+    // this.getUserInfo()
+  }
+
+  // 生命周期函数-渲染到内存（执行多次）
+  render() {
+    // const { history } = this.props
 
     return (
       <div className={styles.root}>
@@ -43,30 +90,8 @@ export default class Profile extends Component {
             </div>
             <div className={styles.user}>
               <div className={styles.name}>游客</div>
-              {/* 登录后展示： */}
-              {/* <>
-                <div className={styles.auth}>
-                  <span onClick={this.logout}>退出</span>
-                </div>
-                <div className={styles.edit}>
-                  编辑个人资料
-                  <span className={styles.arrow}>
-                    <i className="iconfont icon-arrow" />
-                  </span>
-                </div>
-              </> */}
-
-              {/* 未登录展示： */}
-              <div className={styles.edit}>
-                <Button
-                  type="primary"
-                  size="small"
-                  inline
-                  onClick={() => history.push('/login')}
-                >
-                  去登录
-                </Button>
-              </div>
+              {/* 调用函数-渲染登录状态 */}
+              { this.renderLogin() }
             </div>
           </div>
         </div>
