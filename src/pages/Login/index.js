@@ -119,7 +119,10 @@ export default withFormik({
       // 保存token到本地存储
       localStorage.setItem('my-token', data.body.token)
       // 提示登录成功
-      Toast.success(data.description, 2)
+      Toast.success(data.description, 1)
+      // 跳转到上一个页面，不能再用this.props了
+      // console.log('登录页面的props', props)
+      props.history.go(-1)
     } else {
       // 提示登录失败
       Toast.fail(data.description, 2)

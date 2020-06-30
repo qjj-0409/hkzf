@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
-import { Grid, Button } from 'antd-mobile'
+import { Grid, Button, Modal } from 'antd-mobile'
 
 import baseURL from '../../utils/baseURL'
 
 import styles from './index.module.css'
 
-import { isAuth, getToken } from '../../utils/token'
+import { isAuth, getToken, removeToken } from '../../utils/token'
 import request from '../../utils/request'
 
 // 菜单数据
@@ -79,7 +79,7 @@ export default class Profile extends Component {
         authorization: getToken()
       }
     })
-    console.log('获取到的用户信息：', data)
+    // console.log('获取到的用户信息：', data)
     if (data.status === 200) {
       // 请求成功，渲染用户个人信息
       this.setState({
@@ -89,6 +89,39 @@ export default class Profile extends Component {
         }
       })
     }
+  }
+
+  // 封装函数-退出登录
+  logout = () => {
+    // 1.显示弹出框
+    Modal.alert('退出登录', '你确定退出吗???', [
+      { text: '取消', onPress: () => {
+        // 2.点击取消关闭弹出框
+        console.log('取消')
+      }},
+      { text: '确定', onPress: async () => {
+        console.log('确定退出')
+        // 3.点击确定发请求退出
+        const { data } = await request.post('/user/logout', null, {
+          headers: {
+            authorization: getToken()
+          }
+        })
+        console.log('退出信息：', data)
+        // 4.退出成功，清除token，重置state数据
+        if (data.status === 200) {
+          removeToken()
+          this.setState({
+            isLogin: false, // 控制登录状态
+            userInfo: { // 用户相关信息
+              avatar: '', // 用户头像
+              nickname: '' // 用户昵称
+            }
+          })
+        }
+      }}
+    ])
+    
   }
 
   // 生命周期函数-初次渲染到页面（执行一次）
