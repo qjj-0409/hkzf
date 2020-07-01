@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import baseURL from '../../utils/baseURL'
 import request from '../../utils/request'
 import NavHeader from '../../components/NavHeader'
 import HouseItem from '../../components/HouseItem'
@@ -47,7 +46,7 @@ export default class Rent extends Component {
         <HouseItem
           key={item.houseCode}
           onClick={() => history.push(`/detail/${item.houseCode}`)}
-          src={baseURL + item.houseImg}
+          houseImg={item.houseImg}
           title={item.title}
           desc={item.desc}
           tags={item.tags}

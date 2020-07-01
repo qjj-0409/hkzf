@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 // 导入antd-mobile
 import { NavBar, Icon } from 'antd-mobile'
 
+import './navheader.css'
+
 /**
  * 完善封装
  * 1.封装的组件的props对象没有history、location、match三个对象
