@@ -14,6 +14,7 @@ import NavHeader from '../../../components/NavHeader'
 import HousePackge from '../../../components/HousePackage'
 
 import styles from './index.module.css'
+import request from '../../../utils/request'
 
 const alert = Modal.alert
 
@@ -99,6 +100,37 @@ export default class RentAdd extends Component {
     this.setState({
       [name]: val
     })
+  }
+
+  // 封装函数-上传图片
+  // (files: Object, operationType: string, index: number): void
+  uploadImage = async (files, operationType, index) => {
+    console.log('图片数组files', files)
+    console.log('操作类型operationType', operationType)
+    console.log('删除索引index', index)
+    // 图片预览
+    this.setState({
+      tempSlides: files
+    })
+    // 上传图片的逻辑：选择图片-上传到后台-后台返回一个url图片地址
+    // 1.先判断有没有选择图片
+    if (this.state.tempSlides.length > 0) {
+      // 2.循环添加图片到FormData对象中
+      let fd = new FormData()
+      this.state.tempSlides.forEach(item => {
+        let file = item.file
+        // 追加到FormData对象中
+        fd.append('file', file)
+      })
+      // 3.发请求上传图片
+      let { data } = await request.post('/houses/image', fd, {
+        'Content-Type': 'multipart/form-data'
+      })
+      console.log('上传图片后的结果', data)
+      this.setState({
+        houseImg: data.body.join('|')
+      })
+    }
   }
 
   // 封装函数-提交表单
@@ -246,6 +278,7 @@ export default class RentAdd extends Component {
             files={tempSlides}
             multiple={true}
             className={styles.imgpicker}
+            onChange={this.uploadImage}
           />
         </List>
 
@@ -258,7 +291,7 @@ export default class RentAdd extends Component {
           <HousePackge
             select
             onSelect={(val) => {
-              this.getValue('supporting', val)
+              this.getValue('supporting', val.join('|'))
             }}
           />
         </List>
