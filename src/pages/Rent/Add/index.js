@@ -7,7 +7,8 @@ import {
   Picker,
   ImagePicker,
   TextareaItem,
-  Modal
+  Modal,
+  Toast
 } from 'antd-mobile'
 
 import NavHeader from '../../../components/NavHeader'
@@ -95,8 +96,8 @@ export default class RentAdd extends Component {
 
   // 封装函数-获取value
   getValue = (name, val) => {
-    console.log('房屋name', name)
-    console.log('房屋value', val)
+    // console.log('房屋name', name)
+    // console.log('房屋value', val)
     this.setState({
       [name]: val
     })
@@ -105,9 +106,9 @@ export default class RentAdd extends Component {
   // 封装函数-上传图片
   // (files: Object, operationType: string, index: number): void
   uploadImage = async (files, operationType, index) => {
-    console.log('图片数组files', files)
-    console.log('操作类型operationType', operationType)
-    console.log('删除索引index', index)
+    // console.log('图片数组files', files)
+    // console.log('操作类型operationType', operationType)
+    // console.log('删除索引index', index)
     // 图片预览
     this.setState({
       tempSlides: files
@@ -126,7 +127,7 @@ export default class RentAdd extends Component {
       let { data } = await request.post('/houses/image', fd, {
         'Content-Type': 'multipart/form-data'
       })
-      console.log('上传图片后的结果', data)
+      // console.log('上传图片后的结果', data)
       this.setState({
         houseImg: data.body.join('|')
       })
@@ -134,8 +135,43 @@ export default class RentAdd extends Component {
   }
 
   // 封装函数-提交表单
-  addHouse = () => {
+  addHouse = async () => {
     console.log('收集到的房屋信息', this.state)
+    // 整理需要提交的房屋信息
+    let houseInfo = {
+      // 小区的名称和id
+      community: this.state.community.id,
+      // 价格
+      price: this.state.price,
+      // 面积
+      size: this.state.size,
+      // 房屋类型
+      roomType: this.state.roomType,
+      // 楼层
+      floor: this.state.floor,
+      // 朝向：
+      oriented: this.state.oriented,
+      // 房屋标题
+      title: this.state.title,
+      // 房屋图片
+      houseImg: this.state.houseImg,
+      // 房屋配套：
+      supporting: this.state.supporting,
+      // 房屋描述
+      description: this.state.description
+    }
+    // 发布房源
+    const { data } = await request.post('/user/houses', houseInfo)
+    console.log('发布房源后的信息', data)
+    // 发布房源成功
+    if (data.status === 200) {
+      // 提示
+      Toast.success('发布房源成功', 1)
+      // 跳转到房屋管理页面
+      this.props.history.push('/rent')
+    } else {
+      Toast.fail('发布失败~~', 1)
+    }
   }
 
   // 生命周期函数-初次渲染到页面

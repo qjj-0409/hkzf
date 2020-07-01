@@ -15,6 +15,7 @@ import { getCurrentCity } from '../../utils/index'
 
 // 导入axios实例对象
 import request from '../../utils/request'
+import baseURL from '../../utils/baseURL'
 
 const BMap = window.BMap
 export default class Map extends Component {
@@ -216,7 +217,7 @@ export default class Map extends Component {
             <div className={styles.imgWrap}>
               <img
                 className={styles.img}
-                src={`http://api-haoke-web.itheima.net${item.houseImg}`}
+                src={baseURL + item.houseImg}
                 alt=""
               />
             </div>
