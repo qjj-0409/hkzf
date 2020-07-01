@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // 导入搜索导航栏组件
 import SearchHeader from '../../components/SearchHeader'
+import HouseItem from '../../components/HouseItem'
 // 导入Filter 筛选条件组件
 import Filter from './components/Filter'
 import { Toast } from 'antd-mobile'
@@ -98,45 +99,54 @@ export default class Houselist extends Component {
         className={styles.loading}
       >加载中...</div>
     }
-    return (
-      <div
-        className={styles.house}
-        key={key}
-        style={style}
-        onClick={
-          () => {
-            this.props.history.push(`/detail/${this.state.list[index].houseCode}`)
-          }
-        }
-      >
-        <div className={styles.imgWrap}>
-          <img
-            className={styles.img}
-            src={`http://api-haoke-web.itheima.net${house.houseImg}`}
-            alt=""
-          />
-        </div>
-        <div className={styles.content}>
-          <h3 className={styles.title}>{house.title}</h3>
-          <div className={styles.desc}>{house.desc}</div>
-          <div>
-            {
-              house.tags.map((tag, i) => {
-                return (
-                  <span
-                    className={[styles.tag, this.formatTag(i)].join(' ')}
-                    key={i}
-                >{tag}</span>
-                )
-              })
-            }
-          </div>
-          <div className={styles.price}>
-            <span className={styles.priceNum}>{house.price}</span>元/月
-          </div>
-        </div>
-      </div>
-    )
+    return <HouseItem
+      key={house.houseCode}
+      onClick={() => this.props.history.push(`/detail/${house.houseCode}`)}
+      houseImg={house.houseImg}
+      title={house.title}
+      desc={house.desc}
+      tags={house.tags}
+      price={house.price}
+    ></HouseItem>
+    // return (
+    //   <div
+    //     className={styles.house}
+    //     key={key}
+    //     style={style}
+    //     onClick={
+    //       () => {
+    //         this.props.history.push(`/detail/${this.state.list[index].houseCode}`)
+    //       }
+    //     }
+    //   >
+    //     <div className={styles.imgWrap}>
+    //       <img
+    //         className={styles.img}
+    //         src={`http://api-haoke-web.itheima.net${house.houseImg}`}
+    //         alt=""
+    //       />
+    //     </div>
+    //     <div className={styles.content}>
+    //       <h3 className={styles.title}>{house.title}</h3>
+    //       <div className={styles.desc}>{house.desc}</div>
+    //       <div>
+    //         {
+    //           house.tags.map((tag, i) => {
+    //             return (
+    //               <span
+    //                 className={[styles.tag, this.formatTag(i)].join(' ')}
+    //                 key={i}
+    //             >{tag}</span>
+    //             )
+    //           })
+    //         }
+    //       </div>
+    //       <div className={styles.price}>
+    //         <span className={styles.priceNum}>{house.price}</span>元/月
+    //       </div>
+    //     </div>
+    //   </div>
+    // )
   }
 
   // 封装函数-当前数据是否加载完成

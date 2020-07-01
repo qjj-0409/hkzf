@@ -372,7 +372,7 @@ export default class HouseDetail extends Component {
           <div className={styles.items}>
             {recommendHouses.map(item => (
               // {...item}把数据展开传入给HouseItem
-              <HouseItem {...item} key={item.id} />
+              <HouseItem key={item.id} {...item} />
             ))}
           </div>
         </div>

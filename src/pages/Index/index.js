@@ -18,6 +18,7 @@ import request from '../../utils/request'
 
 // 导入公共函数
 import { getCurrentCity } from '../../utils/index'
+import NewsList from '../../components/NewsList'
 
 // 导航菜单的数据
 const navs = [{
@@ -48,7 +49,7 @@ export default class Index extends Component {
       imgHeight: 176, // 轮播图片大小
       isAutoPlay: false, // 控制是否自动轮播
       groups: [], // 租房小组数据
-      news: [], // 最新资讯数据
+      // news: [], // 最新资讯数据
       currentCity: {} // 当前城市信息
     }
 
@@ -58,8 +59,8 @@ export default class Index extends Component {
       this.getSwiperData()
       // 获取租房小组数据
       this.getGroups()
-      // 获取最新资讯数据
-      this.getNews()
+      // // 获取最新资讯数据
+      // this.getNews()
       // 调用公共函数-获取当前定位城市
       let dingwei = await getCurrentCity()
       // console.log(dingwei)
@@ -106,14 +107,14 @@ export default class Index extends Component {
     //   })
     // }
 
-    // 封装函数-获取最新资讯数据
-    async getNews () {
-      const { data } = await request.get(`/home/news?area=${this.state.currentCity.value}`)
-      // console.log(data.body)
-      this.setState({
-        news: data.body
-      })
-    }
+    // // 封装函数-获取最新资讯数据
+    // async getNews () {
+    //   const { data } = await request.get(`/home/news?area=${this.state.currentCity.value}`)
+    //   // console.log(data.body)
+    //   this.setState({
+    //     news: data.body
+    //   })
+    // }
 
 
     // 封装函数-渲染轮播图
@@ -182,23 +183,23 @@ export default class Index extends Component {
       )
     }
 
-    // 封装函数-渲染最新资讯
-    renderNews () {
-      return this.state.news.map(item => {
-        return (
-          <li className="item" key={item.id}>
-            <img src={`http://api-haoke-web.itheima.net${item.imgSrc}`} alt=""/>
-            <div className="item-right">
-              <h3>{item.title}</h3>
-              <p>
-                <span>{item.from}</span>
-                <span>{item.date}</span>
-              </p>
-            </div>
-          </li>
-        )
-      })
-    }
+    // // 封装函数-渲染最新资讯
+    // renderNews () {
+    //   return this.state.news.map(item => {
+    //     return (
+    //       <li className="item" key={item.id}>
+    //         <img src={`http://api-haoke-web.itheima.net${item.imgSrc}`} alt=""/>
+    //         <div className="item-right">
+    //           <h3>{item.title}</h3>
+    //           <p>
+    //             <span>{item.from}</span>
+    //             <span>{item.date}</span>
+    //           </p>
+    //         </div>
+    //       </li>
+    //     )
+    //   })
+    // }
 
     
     // 生命周期函数-渲染到内存
@@ -265,10 +266,11 @@ export default class Index extends Component {
                   <div className="news-title">
                     <h2>最新资讯</h2>
                   </div>
-                  <ul>
-                    {/* 调用函数-渲染最新资讯 */}
+                  <NewsList></NewsList>
+                  {/* <ul>
+                    调用函数-渲染最新资讯
                     { this.renderNews() }
-                  </ul>
+                  </ul> */}
                 </div>
 
             </div>

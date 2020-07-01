@@ -17,6 +17,8 @@ import { getCurrentCity } from '../../utils/index'
 import request from '../../utils/request'
 import baseURL from '../../utils/baseURL'
 
+import HouseItem from '../../components/HouseItem/'
+
 const BMap = window.BMap
 export default class Map extends Component {
     state = {
@@ -209,39 +211,49 @@ export default class Map extends Component {
     // 封装函数-渲染房源列表
     renderHouseList = () => {
       return this.state.list.map((item) => {
-        return (
-          <div
-            className={styles.house}
-            key={item.houseCode}
-          >
-            <div className={styles.imgWrap}>
-              <img
-                className={styles.img}
-                src={baseURL + item.houseImg}
-                alt=""
-              />
-            </div>
-            <div className={styles.content}>
-              <h3 className={styles.title}>{item.title}</h3>
-              <div className={styles.desc}>{item.desc}</div>
-              <div>
-                {
-                  item.tags.map((tag, i) => {
-                    return (
-                      <span
-                        className={[styles.tag, this.formatTag(i)].join(' ')}
-                        key={i}
-                    >{tag}</span>
-                    )
-                  })
-                }
-              </div>
-              <div className={styles.price}>
-                <span className={styles.priceNum}>{item.price}</span>元/月
-              </div>
-            </div>
-          </div>
-        )
+        let { history } = this.props
+        return <HouseItem
+          key={item.houseCode}
+          onClick={() => history.push(`/detail/${item.houseCode}`)}
+          houseImg={item.houseImg}
+          title={item.title}
+          desc={item.desc}
+          tags={item.tags}
+          price={item.price}
+        ></HouseItem>
+        // return (
+        //   <div
+        //     className={styles.house}
+        //     key={item.houseCode}
+        //   >
+        //     <div className={styles.imgWrap}>
+        //       <img
+        //         className={styles.img}
+        //         src={baseURL + item.houseImg}
+        //         alt=""
+        //       />
+        //     </div>
+        //     <div className={styles.content}>
+        //       <h3 className={styles.title}>{item.title}</h3>
+        //       <div className={styles.desc}>{item.desc}</div>
+        //       <div>
+        //         {
+        //           item.tags.map((tag, i) => {
+        //             return (
+        //               <span
+        //                 className={[styles.tag, this.formatTag(i)].join(' ')}
+        //                 key={i}
+        //             >{tag}</span>
+        //             )
+        //           })
+        //         }
+        //       </div>
+        //       <div className={styles.price}>
+        //         <span className={styles.priceNum}>{item.price}</span>元/月
+        //       </div>
+        //     </div>
+        //   </div>
+        // )
       })
     }
 
@@ -259,7 +271,7 @@ export default class Map extends Component {
             {/* 标题 */}
             <div className={styles.titleWrap}>
               <h1 className={styles.listTitle}>房屋列表</h1>
-              <a className={styles.titleMore} href="/house/list">更多房源</a>
+              <a className={styles.titleMore} href="/home/houselist">更多房源</a>
             </div>
             {/* 房源信息 */}
             <div className={styles.houseItems}>
