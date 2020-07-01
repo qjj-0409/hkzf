@@ -10,7 +10,8 @@ import request from '../../utils/request'
 // 1.下载安装react-virtualized插件
 // 2.导入react-virtualized中的List组件
 // AutoSizer的作用：计算屏幕剩余宽高，并设置给被包裹的List组件
-import {AutoSizer, List} from 'react-virtualized'
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer'
+import List from 'react-virtualized/dist/commonjs/List'
 
 // 导入公共函数
 import { getCurrentCity } from '../../utils/index'

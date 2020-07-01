@@ -13,7 +13,12 @@ import { getCurrentCity } from '../../utils/index'
 // 导入axios实例对象
 import request from '../../utils/request'
 // 导入react-virtualized的List组件
-import {List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized'
+// import {List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized'
+// 打包优化-react-virtualized按需引入
+import List from 'react-virtualized/dist/commonjs/List'
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer'
+import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller'
+import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader'
 import styles from './houselist.module.scss'
 // 导入自定义的吸顶组件
 import Sticky from '../../components/Sticky/index'

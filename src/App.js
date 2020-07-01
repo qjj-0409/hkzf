@@ -15,7 +15,6 @@ import { BrowserRouter, Route, Redirect} from 'react-router-dom'
 const Home = lazy(() => import('./pages/Home'))
 const CityList = lazy(() => import('./pages/CityList/'))
 const Map = lazy(() => import('./pages/Map/'))
-const Map = lazy(() => import('./pages/Map/'))
 const HouseDetail = lazy(() => import('./pages/HouseDetail/'))
 const Login = lazy(() => import('./pages/Login/'))
 const Rent = lazy(() => import('./pages/Rent/'))
