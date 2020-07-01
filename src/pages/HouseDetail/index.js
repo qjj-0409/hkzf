@@ -59,8 +59,10 @@ const labelStyle = {
 }
 
 export default class HouseDetail extends Component {
+  ID = this.props.match.params.id // 房屋id
   state = {
     isLoading: false,
+    isFavorite: false, // 是否收藏
 
     houseInfo: {
       // 房屋图片
@@ -101,8 +103,7 @@ export default class HouseDetail extends Component {
   getHouseInfo = async () => {
     // 发送请求之前显示loading
     Toast.loading('加载中', 0)
-    const id = this.props.match.params.id
-    const { data } = await request.get('/houses/' + id)
+    const { data } = await request.get('/houses/' + this.ID)
     // 请求成功关闭loading
     Toast.hide()
     // console.log('商品详情：',data)
@@ -191,11 +192,47 @@ export default class HouseDetail extends Component {
     )
   }
 
+  // 封装函数-获取收藏状态
+  getFavorite = async () => {
+    const { data } = await request.get(`/user/favorites/${this.ID}`)
+    console.log('获取收藏信息', data)
+    this.setState({
+      isFavorite: data.body.isFavorite
+    })
+  }
+
+  // 封装函数-设置是否收藏
+  setFavorite = async () => {
+    // 发请求设置是否收藏
+    if (this.state.isFavorite) {
+      // 如果已收藏，则取消收藏
+      const { data } = await request.delete(`/user/favorites/${this.ID}`)
+      // console.log('删除收藏结果', data)
+      if (data.status === 200) {
+        // 将isFavorite设置为false
+        this.setState({
+          isFavorite: false
+        })
+      }
+    } else {
+      // 如果未收藏，则添加收藏
+      const { data } = await request.post(`/user/favorites/${this.ID}`)
+      // console.log('添加收藏结果', data)
+      if (data.status === 200) {
+        // 将isFavorite设置为true
+        this.setState({
+          isFavorite: true
+        })
+      }
+    }
+  }
+
   // 生命周期函数-初次渲染到页面
-  componentDidMount() {
+  componentDidMount = () => {
     // 发请求获取房子详情
     this.getHouseInfo()
-    
+    // 发请求确定房屋是否收藏
+    this.getFavorite()
   }
 
   // 渲染轮播图结构
@@ -245,7 +282,7 @@ export default class HouseDetail extends Component {
   }
 
   render() {
-    const { isLoading, houseInfo: { community, title, tags, supporting, description, price, roomType, size, floor, oriented } } = this.state
+    const { isLoading, isFavorite, houseInfo: { community, title, tags, supporting, description, price, roomType, size, floor, oriented } } = this.state
     return (
       <div className={styles.root}>
         {/* 导航栏 */}
@@ -379,9 +416,12 @@ export default class HouseDetail extends Component {
 
         {/* 底部收藏按钮 */}
         <Flex className={styles.fixedBottom}>
-          <Flex.Item>
+          <Flex.Item
+            onClick={this.setFavorite}
+          >
+          {/* 收藏图片：http://api-haoke-web.itheima.net/img/star.png */}
             <img
-              src={baseURL + '/img/unstar.png'}
+              src={isFavorite ? baseURL + '/img/star.png' : baseURL + '/img/unstar.png'}
               className={styles.favoriteImg}
               alt="收藏"
             />

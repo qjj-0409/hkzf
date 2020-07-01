@@ -33,7 +33,10 @@ request.interceptors.response.use(function(response){
   // console.log('响应拦截器的配置对象response', response)
   if (response.data.status === 400) {
     console.log('token有问题')
+    // 删除token
     removeToken()
+    // 跳转到登录页
+    window.location.href = '/login'
   } else if (response.data.status === 500) {
     console.log('服务器有问题')
   } else if (response.data.status === 404) {

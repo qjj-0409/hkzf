@@ -31,7 +31,7 @@ export default class Houselist extends Component {
 
   // 封装函数-获取格式化的选择项，发请求获取房屋列表
   onFilter = (filters) => {
-    console.log('HouseList组件接收到的格式化选择器：', filters)
+    // console.log('HouseList组件接收到的格式化选择器：', filters)
     // 两个函数用到同一个参数，传参方式：1.传参数 2.全局变量 3.this.变量 = 变量
     this.filters = filters
     // 调用函数发请求
@@ -45,7 +45,7 @@ export default class Houselist extends Component {
   searchHouseList = async (startIndex = 1, stopIndex = 20, info = true) => {
     // 发请求前显示loading加载中
     Toast.loading('加载中', 0)
-    console.log('请求中的filters', this.filters)
+    // console.log('请求中的filters', this.filters)
     // console.log('startIndex和stopIndex', startIndex, stopIndex)
     const { data } = await request.get('/houses', {
       params: {
@@ -56,7 +56,7 @@ export default class Houselist extends Component {
       }
     })
     let newList = [...this.state.list, ...data.body.list]
-    console.log('房屋列表信息：', newList)
+    // console.log('房屋列表信息：', newList)
     this.setState({
       count: data.body.count,
       list: newList
